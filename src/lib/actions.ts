@@ -60,6 +60,7 @@ export const getGameById = async (id: string) => {
       },
     });
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error: unknown) {
     console.error(error);
