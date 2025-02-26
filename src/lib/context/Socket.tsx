@@ -48,6 +48,7 @@ export const SocketProvider: React.FC<{
       }
 
       const socketInstance = io(`${config.server}`, {
+        transports: ["websocket"],
         auth: { token, origin: config.platform, platformId },
       });
       setSocket(socketInstance);
