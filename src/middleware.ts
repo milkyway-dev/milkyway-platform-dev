@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { config as _config } from "./lib/config";
+
 function isTokenExpired(token: string): boolean {
   try {
     const [, payload] = token.split('.');
@@ -18,7 +19,6 @@ export default function middleware(request: NextRequest) {
   
   // Check token expiration
   if (token?.value && isTokenExpired(token.value)) {
-    console.log("Token expired");
     const response = NextResponse.redirect(new URL("/logout", request.url));
     response.cookies.delete("token");
     return response;
