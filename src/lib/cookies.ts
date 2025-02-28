@@ -9,8 +9,9 @@ export const getCookie = async () => {
 
 export const getAwsAlbCookie = async () => {
   const cookieStore = cookies();
-  const awsALBCookie = cookieStore.get("AWSALB")?.value;
-  return awsALBCookie
+  const awsALBCookie = cookieStore.get("AWSALBTG")?.value;
+  const awsALBTGCORSCookie = cookieStore.get("AWSALBTGCORS")?.value;
+  return { awsALBCookie, awsALBTGCORSCookie };
 }
 
 export const deleteCookie = async () => {

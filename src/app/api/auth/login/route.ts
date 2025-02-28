@@ -1,4 +1,3 @@
-// filepath: /Users/rahultrippy/Documents/milkyway-platform/src/app/api/auth/login/route.ts
 import { config } from "@/src/lib/config";
 import { NextResponse } from "next/server";
 
@@ -14,7 +13,6 @@ export async function POST(request: Request) {
             body: JSON.stringify(body),
             credentials: 'include',
         });
-
         const data = await apiResponse.json();
         if (!apiResponse.ok) {
             return NextResponse.json(
@@ -22,17 +20,34 @@ export async function POST(request: Request) {
                 { status: apiResponse.status }
             );
         }
+        const setCookieHeader = apiResponse.headers.get('set-cookie');
+        if (setCookieHeader) {
+            const cookies = setCookieHeader.split(', ').map(cookie => cookie.split(';')[0]);
+            const awsALBTG = cookies.find(cookie => cookie.startsWith('AWSALBTG='));
+            const awsALBTGCORS = cookies.find(cookie => cookie.startsWith('AWSALBTGCORS='));
 
-        const awsALBCookie = apiResponse.headers.get('set-cookie')?.split(';').find(cookie => cookie.trim().startsWith('AWSALB='));
-        if (awsALBCookie) {
-            const cookieValue = awsALBCookie.split('=')[1];
             const response = NextResponse.json(data);
-            response.cookies.set('AWSALB', cookieValue, {
-                httpOnly: false,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                path: '/',
-            });
+
+            if (awsALBTG) {
+                const tgValue = awsALBTG.split('=')[1];
+                response.cookies.set('AWSALBTG', tgValue, {
+                    httpOnly: false,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    path: '/',
+                });
+            }
+
+            if (awsALBTGCORS) {
+                const corsValue = awsALBTGCORS.split('=')[1];
+                response.cookies.set('AWSALBTGCORS', corsValue, {
+                    httpOnly: false,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    path: '/',
+                });
+            }
+
             return response;
         }
 
