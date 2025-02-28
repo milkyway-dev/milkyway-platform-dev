@@ -1,23 +1,20 @@
 "use client";
-import { config } from "../config";
-import {
-  resetUser,
-  setAvatar,
-  setCredits,
-  updateConnection,
-} from "../redux/features/userSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, createContext, useContext } from "react";
-import { io, Socket } from "socket.io-client";
 
+import { createContext, useContext, useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 import toast from "react-hot-toast";
-import Notification from "@/src/components/ui/Notification";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { resetUser, setCredits, updateConnection } from "../redux/features/userSlice";
+import { useRouter } from "next/navigation";
 import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
+import Notification from "@/src/components/ui/Notification";
+import {getAwsAlbCookie} from "@/src/lib/cookies";
+import { config } from "../config";
 
 interface SocketContextType {
   socket: Socket | null;
 }
+
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
 export const useSocket = (): SocketContextType => {
@@ -33,35 +30,47 @@ export const SocketProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ token, children }) => {
   const dispatch = useAppDispatch();
-  const [socket, setSocket] = useState<Socket | null>(null);
   const connection = useAppSelector((state) => state.user.connected);
-
+  const [socket, setSocket] = useState<Socket | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (token) {
-      // Use sessionStorage instead of localStorage for unique platformId per tab
+    const initializeSocket = async () => {
+      const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
+      if (!awsALBCookie || !awsALBTGCORSCookie) {
+        console.error("Missing AWS sticky session cookies");
+        return;
+      }
+
       let platformId = sessionStorage.getItem("platformId");
       if (!platformId) {
-        platformId = crypto.randomUUID(); // Generate a unique platformId
+        platformId = crypto.randomUUID();
         sessionStorage.setItem("platformId", platformId);
       }
 
-      const socketInstance = io(`${config.server}`, {
+      const socketInstance = io(config.server, {
         transports: ["websocket"],
-        auth: { token, origin: config.platform, platformId },
+        auth: {
+          token,
+          origin: config.platform,
+          platformId,
+        },
+        extraHeaders: {
+          Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
+        },
       });
+
       setSocket(socketInstance);
 
       socketInstance.on("connect", () => {
-        console.log("Connected with socket id:", socketInstance.id);
+        console.log("Connected to Socket.IO server with ID:", socketInstance.id);
         setTimeout(() => {
           dispatch(updateConnection(true));
         }, 1000);
       });
 
       socketInstance.on("disconnect", () => {
-        console.log("Disconnected from socket");
+        console.log("Disconnected from Socket.IO server");
         dispatch(resetUser());
         dispatch(updateConnection(false));
       });
@@ -76,11 +85,10 @@ export const SocketProvider: React.FC<{
       });
 
       socketInstance.on("alert", (message: any) => {
-        if (message == "ForcedExit") {
+        if (message === "ForcedExit") {
           dispatch(resetUser());
           router.push("/logout");
         } else if (message === "NewTab") {
-          console.warn("ALERT : ", message);
           toast.custom(
             (t) => (
               <Notification
@@ -88,7 +96,7 @@ export const SocketProvider: React.FC<{
                 message="You are already active in another tab."
               />
             ),
-            { duration: Infinity } // Keep the notification open indefinitely
+            { duration: Infinity } 
           );
         }
       });
@@ -96,6 +104,10 @@ export const SocketProvider: React.FC<{
       return () => {
         socketInstance.disconnect();
       };
+    };
+
+    if (token) {
+      initializeSocket();
     }
   }, [token]);
 

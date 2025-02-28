@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { config as _config } from "./lib/config";
-
 function isTokenExpired(token: string): boolean {
   try {
     const [, payload] = token.split('.');
@@ -16,7 +15,7 @@ export default function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const isPublicPath = path === "/login";
   const token = request.cookies.get("token");
-
+  
   // Check token expiration
   if (token?.value && isTokenExpired(token.value)) {
     console.log("Token expired");
