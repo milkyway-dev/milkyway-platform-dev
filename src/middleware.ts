@@ -5,22 +5,34 @@ function isTokenExpired(token: string): boolean {
   try {
     const [, payload] = token.split('.');
     const decodedPayload = JSON.parse(Buffer.from(payload, 'base64').toString());
-    const expirationTime = decodedPayload.exp * 1000; // Convert to milliseconds
+    const expirationTime = decodedPayload.exp * 1000;
     return Date.now() >= expirationTime;
   } catch (error) {
-    return true; // If token can't be parsed, consider it expired
+    return true;
   }
 }
+
+
 
 export default function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const isPublicPath = path === "/login";
   const token = request.cookies.get("token");
-  
-  // Check token expiration
+  const awsAlbTG = request.cookies.get("AWSALBTG");
+  const awsAlbTGCoRS = request.cookies.get("AWSALBTGCORS");
+
+  if ((!awsAlbTG || !awsAlbTGCoRS) && !isPublicPath) {
+    const response = NextResponse.redirect(new URL("/login", request.url));
+    response.cookies.delete("token");
+    response.cookies.delete("AWSALBTG");
+    response.cookies.delete("AWSALBTGCORS");
+    return response;
+  }
+
   if (token?.value && isTokenExpired(token.value)) {
     const response = NextResponse.redirect(new URL("/logout", request.url));
     response.cookies.delete("token");
+
     return response;
   }
 
@@ -35,6 +47,7 @@ export default function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
+
 
 export const config = {
   matcher: "/((?!api|static|.*\\..*|_next).*)",

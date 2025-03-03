@@ -5,7 +5,7 @@ export const getCookie = async () => {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value;
   return token;
-};
+}; ``
 
 export const getAwsAlbCookie = async () => {
   const cookieStore = cookies();
