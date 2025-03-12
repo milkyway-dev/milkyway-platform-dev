@@ -48,7 +48,7 @@ export const SocketProvider: React.FC<{
         sessionStorage.setItem("platformId", platformId);
       }
 
-      const socketInstance = io(config.server, {
+      const socketInstance = io(`${config.server}/playground`, {
         transports: ["websocket"],
         auth: {
           token,
