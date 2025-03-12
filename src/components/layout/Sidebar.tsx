@@ -1,10 +1,13 @@
 "use client";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 interface SidebarProps {
   onSelectCategory: (category: string) => void;
   selectedCategory: string;
 }
+
+
 
 const Sidebar: React.FC<SidebarProps> = ({
   onSelectCategory,
@@ -14,6 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [viewportWidth, setViewportWidth] = useState<number | undefined>(
     undefined
   );
+  const [activeIndex, setActiveIndex] = useState(0); // Default active = "All Games"
 
   const categories = [
     {
@@ -1789,205 +1793,37 @@ const Sidebar: React.FC<SidebarProps> = ({
     }
   }, [viewportWidth]);
 
+  const menuItems = [
+    { src: "/assets/images/all.png", alt: "All Games" ,catagory:'all'},
+    { src: "/assets/images/fav.png", alt: "Heart",catagory:'fav'},
+    { src: "/assets/images/slot.png", alt: "Slots",catagory:'slot'},
+    { src: "/assets/images/keno.png", alt: "Keno",catagory:'keno'},
+    { src: "/assets/images/other.png", alt: "Other",catagory:'other'},
+  ];
   return (
-    <div
-      className={`absolute sm:bottom-0 left-[1.5%] z-[10] w-[4.5%] flex justify-between items-center flex-col ${
-        open
-          ? "sm:h-[36vw] sm:py-[2%] h-[60vw] sm:mt-0 bottom-0"
-          : " sm:py-[2%] h-fit bottom-0"
-      } `}
-    >
-      {open && (
-        <div className="p-[5%] bg-gradient-to-r from-[#53EFF1] via-[#3786FA] to-[#12C7F5] rounded-[5px]">
-          <div className="flex gap-1 flex-col p-[4%] rounded-[5px] bg-gradient-to-r from-blue-900 via-blue-700 to-blue-900">
-            {categories.map((category, index) => {
-              return (
-                <div
-                  key={index}
-                  onClick={() => onSelectCategory(category.name)}
-                  className="flex-1 h-[15%] w-full"
-                >
-                  {selectedCategory === category.name
-                    ? category?.selectedIcon
-                    : category.icon}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-      <div
-        className={
-          open ? "rotate-45 transition-all h-fit" : "transition-all h-fit"
-        }
-        onClick={() => setOpen((prev) => !prev)}
-      >
-        {open ? (
-          <svg
-            width="72"
-            height="72"
-            viewBox="0 0 72 72"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-[80%] m-auto h-auto"
+    <>
+      <div className="portrait:w-[12vh] landscape:w-[12vw] h-auto">
+      <div className="flex flex-col items-end gap-y-[1vw] portrait:translate-x-[.5vh] landscape:translate-x-[.5vw] rounded-r-lg">
+        {menuItems?.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => { setActiveIndex(index),onSelectCategory(item?.catagory)}}
+            className={`relative cursor-pointer portrait:rounded-[.6vh] landscape:rounded-[.6vw] hover:scale-90 transition-all portrait:w-[9vh] landscape:w-[9vw] 
+              ${activeIndex === index ? "shadow-[0_0_35px_rgba(255,215,0,0.7)] before:absolute before:inset-0 border border-yellow-500 before:rounded-xl before:p-[5px] before:bg-gradient-to-r before:from-[#C88856]  before:to-[#FDF6AD] before:-z-10" : "border border-transparent"}`}
           >
-            <rect
-              x="0.754578"
-              y="0.583984"
-              width="70.6584"
-              height="71"
-              rx="14"
-              fill="#000316"
+            <Image
+              src={item.src}
+              alt={item.alt}
+              width={1000}
+              height={1000}
+              quality={100}
+              className="object-contain relative z-10 bg-[#222] rounded-xl"
             />
-            <rect
-              x="3.64762"
-              y="3.47703"
-              width="64.8723"
-              height="65.2139"
-              rx="8.67914"
-              stroke="url(#paint0_linear_520_28840)"
-              strokeWidth="5.78609"
-            />
-            <rect
-              x="10.0123"
-              y="9.8418"
-              width="52.1429"
-              height="52.4845"
-              rx="5.78609"
-              fill="url(#paint1_diamond_520_28840)"
-            />
-            <path
-              d="M47.1647 47.1649C41.1116 53.218 31.2975 53.218 25.2444 47.1649C19.1913 41.1118 19.1913 31.2977 25.2444 25.2446C31.2975 19.1915 41.1116 19.1915 47.1647 25.2446C53.2178 31.2977 53.2178 41.1118 47.1647 47.1649ZM27.6193 27.6194C22.8777 32.361 22.8777 40.0485 27.6193 44.79C32.3608 49.5316 40.0483 49.5316 44.7899 44.79C49.5314 40.0485 49.5314 32.361 44.7899 27.6194C40.0483 22.8779 32.3608 22.8779 27.6193 27.6194Z"
-              fill="url(#paint2_linear_520_28840)"
-            />
-            <circle
-              cx="36.2046"
-              cy="36.2047"
-              r="10.5"
-              transform="rotate(45 36.2046 36.2047)"
-              fill="url(#paint3_linear_520_28840)"
-            />
-            <defs>
-              <linearGradient
-                id="paint0_linear_520_28840"
-                x1="67.8194"
-                y1="4.40254"
-                x2="3.22221"
-                y2="69.11"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop offset="0.123673" stopColor="#46C9CA" />
-                <stop offset="0.863783" stopColor="#227ACE" />
-              </linearGradient>
-              <radialGradient
-                id="paint1_diamond_520_28840"
-                cx="0"
-                cy="0"
-                r="1"
-                gradientUnits="userSpaceOnUse"
-                gradientTransform="translate(36.0838 36.084) rotate(0.0915525) scale(26.077 25.9073)"
-              >
-                <stop offset="0.234774" stopColor="#1A2A4E" />
-                <stop offset="0.709835" stopColor="#093963" />
-                <stop offset="0.830217" stopColor="#06456D" />
-                <stop offset="1" stopColor="#15648C" />
-              </radialGradient>
-              <linearGradient
-                id="paint2_linear_520_28840"
-                x1="47.1647"
-                y1="25.2446"
-                x2="25.2444"
-                y2="47.1649"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#C0BD12" />
-                <stop offset="1" stopColor="#C78A15" />
-              </linearGradient>
-              <linearGradient
-                id="paint3_linear_520_28840"
-                x1="36.2046"
-                y1="25.7047"
-                x2="36.2046"
-                y2="46.7047"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop offset="0.20344" stopColor="#F3F35E" />
-                <stop offset="1" stopColor="#E3B104" />
-              </linearGradient>
-            </defs>
-          </svg>
-        ) : (
-          <svg
-            width="71"
-            height="71"
-            viewBox="0 0 71 71"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-full w-[80%] m-auto"
-          >
-            <rect width="70.6584" height="71" rx="14" fill="#000316" />
-            <rect
-              x="2.89305"
-              y="2.89305"
-              width="64.8723"
-              height="65.2139"
-              rx="8.67914"
-              stroke="url(#paint0_linear_511_28806)"
-              strokeWidth="5.78609"
-            />
-            <rect
-              x="9.25776"
-              y="9.25781"
-              width="52.1429"
-              height="52.4845"
-              rx="5.78609"
-              fill="url(#paint1_diamond_511_28806)"
-            />
-            <path
-              d="M24.5057 34.0084C23.6802 34.0084 23.011 34.6777 23.011 35.5032C23.011 36.3287 23.6802 36.9979 24.5057 36.9979V34.0084ZM24.5208 36.9979C25.3463 36.9979 26.0155 36.3287 26.0155 35.5032C26.0155 34.6777 25.3463 34.0084 24.5208 34.0084V36.9979ZM35.0459 34.0084C34.2204 34.0084 33.5512 34.6777 33.5512 35.5032C33.5512 36.3287 34.2204 36.9979 35.0459 36.9979V34.0084ZM35.061 36.9979C35.8865 36.9979 36.5557 36.3287 36.5557 35.5032C36.5557 34.6777 35.8865 34.0084 35.061 34.0084V36.9979ZM45.5862 34.0084C44.7606 34.0084 44.0914 34.6777 44.0914 35.5032C44.0914 36.3287 44.7606 36.9979 45.5862 36.9979V34.0084ZM45.6012 36.9979C46.4267 36.9979 47.096 36.3287 47.096 35.5032C47.096 34.6777 46.4267 34.0084 45.6012 34.0084V36.9979ZM25.5705 36.5661L26.6265 37.6239L26.6265 37.6239L25.5705 36.5661ZM23.441 36.5661L22.385 37.6239L22.385 37.6239L23.441 36.5661ZM23.441 34.4403L24.4971 35.4981L24.4971 35.4981L23.441 34.4403ZM25.5705 34.4403L24.5144 35.4981L24.5144 35.4981L25.5705 34.4403ZM36.1107 36.5661L35.0546 35.5082L35.0546 35.5082L36.1107 36.5661ZM33.9812 36.5661L35.0373 35.5082L35.0373 35.5082L33.9812 36.5661ZM33.9812 34.4403L35.0373 35.4981L35.0373 35.4981L33.9812 34.4403ZM36.1107 34.4403L35.0546 35.4981L35.0546 35.4981L36.1107 34.4403ZM46.6509 36.5661L47.7069 37.6239V37.6239L46.6509 36.5661ZM44.5214 36.5661L43.4654 37.6239L43.4654 37.6239L44.5214 36.5661ZM44.5214 34.4403L43.4654 33.3824L43.4654 33.3824L44.5214 34.4403ZM46.6509 34.4403L45.5948 35.4981L46.6509 34.4403ZM24.5057 36.9979H24.5208V34.0084H24.5057V36.9979ZM35.0459 36.9979H35.061V34.0084H35.0459V36.9979ZM45.5862 36.9979H45.6012V34.0084H45.5862V36.9979ZM24.5167 35.5032C24.5167 35.5046 24.5162 35.5065 24.5144 35.5082L26.6265 37.6239C27.1895 37.0619 27.5062 36.2991 27.5062 35.5032H24.5167ZM24.5144 35.5082C24.5126 35.5101 24.5095 35.5116 24.5057 35.5116V38.5011C25.3007 38.5011 26.0636 38.1859 26.6265 37.6239L24.5144 35.5082ZM24.5057 35.5116C24.502 35.5116 24.4989 35.5101 24.4971 35.5082L22.385 37.6239C22.9479 38.1859 23.7108 38.5011 24.5057 38.5011V35.5116ZM24.4971 35.5082C24.4953 35.5065 24.4947 35.5046 24.4947 35.5032H21.5053C21.5053 36.2991 21.822 37.0619 22.385 37.6239L24.4971 35.5082ZM24.4947 35.5032C24.4947 35.5018 24.4953 35.4999 24.4971 35.4981L22.385 33.3824C21.822 33.9444 21.5053 34.7073 21.5053 35.5032H24.4947ZM24.4971 35.4981C24.4989 35.4962 24.502 35.4947 24.5057 35.4947V32.5053C23.7108 32.5053 22.9479 32.8205 22.385 33.3824L24.4971 35.4981ZM24.5057 35.4947C24.5095 35.4947 24.5126 35.4962 24.5144 35.4981L26.6265 33.3824C26.0636 32.8205 25.3007 32.5053 24.5057 32.5053V35.4947ZM24.5144 35.4981C24.5162 35.4999 24.5167 35.5018 24.5167 35.5032H27.5062C27.5062 34.7073 27.1895 33.9444 26.6265 33.3824L24.5144 35.4981ZM35.0569 35.5032C35.0569 35.5046 35.0564 35.5065 35.0546 35.5082L37.1667 37.6239C37.7297 37.0619 38.0464 36.2991 38.0464 35.5032H35.0569ZM35.0546 35.5082C35.0528 35.5101 35.0497 35.5116 35.0459 35.5116V38.5011C35.8409 38.5011 36.6038 38.1859 37.1667 37.6239L35.0546 35.5082ZM35.0459 35.5116C35.0422 35.5116 35.0391 35.5101 35.0373 35.5082L32.9252 37.6239C33.4881 38.1859 34.251 38.5011 35.0459 38.5011V35.5116ZM35.0373 35.5082C35.0355 35.5065 35.0349 35.5046 35.0349 35.5032H32.0455C32.0455 36.2991 32.3622 37.0619 32.9252 37.6239L35.0373 35.5082ZM35.0349 35.5032C35.0349 35.5018 35.0355 35.4999 35.0373 35.4981L32.9252 33.3824C32.3622 33.9444 32.0455 34.7073 32.0455 35.5032H35.0349ZM35.0373 35.4981C35.0391 35.4962 35.0422 35.4947 35.0459 35.4947V32.5053C34.251 32.5053 33.4881 32.8205 32.9252 33.3824L35.0373 35.4981ZM35.0459 35.4947C35.0497 35.4947 35.0528 35.4962 35.0546 35.4981L37.1667 33.3824C36.6038 32.8205 35.8409 32.5053 35.0459 32.5053V35.4947ZM35.0546 35.4981C35.0564 35.4999 35.0569 35.5018 35.0569 35.5032H38.0464C38.0464 34.7073 37.7297 33.9444 37.1667 33.3824L35.0546 35.4981ZM45.5972 35.5032C45.5972 35.5046 45.5966 35.5065 45.5948 35.5082L47.7069 37.6239C48.2699 37.0619 48.5866 36.2991 48.5866 35.5032H45.5972ZM45.5948 35.5082C45.593 35.5101 45.5899 35.5116 45.5862 35.5116V38.5011C46.3811 38.5011 47.144 38.1859 47.7069 37.6239L45.5948 35.5082ZM45.5862 35.5116C45.5824 35.5116 45.5793 35.5101 45.5775 35.5082L43.4654 37.6239C44.0283 38.1859 44.7912 38.5011 45.5862 38.5011V35.5116ZM45.5775 35.5082C45.5757 35.5065 45.5751 35.5046 45.5751 35.5032H42.5857C42.5857 36.2991 42.9024 37.0619 43.4654 37.6239L45.5775 35.5082ZM45.5751 35.5032C45.5751 35.5018 45.5757 35.4999 45.5775 35.4981L43.4654 33.3824C42.9024 33.9445 42.5857 34.7073 42.5857 35.5032H45.5751ZM45.5775 35.4981C45.5793 35.4962 45.5824 35.4947 45.5862 35.4947V32.5053C44.7912 32.5053 44.0283 32.8205 43.4654 33.3824L45.5775 35.4981ZM45.5862 35.4947C45.5899 35.4947 45.593 35.4962 45.5948 35.4981L47.7069 33.3824C47.144 32.8205 46.3811 32.5053 45.5862 32.5053V35.4947ZM45.5948 35.4981C45.5966 35.4999 45.5972 35.5018 45.5972 35.5032H48.5866C48.5866 34.7073 48.2699 33.9445 47.7069 33.3824L45.5948 35.4981Z"
-              fill="url(#paint2_linear_511_28806)"
-            />
-            <defs>
-              <linearGradient
-                id="paint0_linear_511_28806"
-                x1="67.0648"
-                y1="3.81855"
-                x2="2.46763"
-                y2="68.5261"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop offset="0.123673" stopColor="#46C9CA" />
-                <stop offset="0.863783" stopColor="#227ACE" />
-              </linearGradient>
-              <radialGradient
-                id="paint1_diamond_511_28806"
-                cx="0"
-                cy="0"
-                r="1"
-                gradientUnits="userSpaceOnUse"
-                gradientTransform="translate(35.3292 35.5001) rotate(0.0915525) scale(26.077 25.9073)"
-              >
-                <stop offset="0.234774" stopColor="#1A2A4E" />
-                <stop offset="0.709835" stopColor="#093963" />
-                <stop offset="0.830217" stopColor="#06456D" />
-                <stop offset="1" stopColor="#15648C" />
-              </radialGradient>
-              <linearGradient
-                id="paint2_linear_511_28806"
-                x1="35.0459"
-                y1="34"
-                x2="35.0459"
-                y2="37.0064"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#F8EB0B" />
-                <stop offset="1" stopColor="#EA8D0B" />
-              </linearGradient>
-            </defs>
-          </svg>
-        )}
+          </button>
+        ))}
       </div>
     </div>
+    </>
   );
 };
 

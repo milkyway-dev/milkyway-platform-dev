@@ -10,10 +10,10 @@ const Home = async () => {
   const favGames = await fetchGames("fav");
 
   return (
-    <section className="relative w-full overflow-hidden ">
+    <section className="relative w-full  overflow-hidden">
       <div className="wave-bg w-full h-full absolute top-0 left-0"></div>
       <Image
-        src={"/bg1.png"}
+        src={"/assets/images/bg.png"}
         fill
         alt="bg"
         priority={true}
@@ -23,7 +23,24 @@ const Home = async () => {
       />
       <Header />
       <Games favgame={favGames?.others} initialGames={initialGames} />
-      <Footer />
+      {/* Left Sugar Cane Image */}
+      <Image
+        src="/assets/images/suger-cane-left.png"
+        alt="Sugar Cane Left"
+        width={1000}
+        height={1000}
+        quality={100}
+        className="absolute z-[-1] left-[-5%] bottom-0  w-auto h-[95%]"
+      />
+      {/* Right Sugar Cane Image */}
+      <Image
+        src="/assets/images/suger-cane-right.png"
+        alt="Sugar Cane Left"
+        width={1000}
+        height={1000}
+        quality={100}
+        className="absolute z-[-1] right-[-10%] bottom-0  w-auto h-[95%] "
+      />
     </section>
   );
 };

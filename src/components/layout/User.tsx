@@ -27,37 +27,51 @@ const User = ({ data }: any) => {
   }, [dispatch]);
 
   return (
-    <div className="absolute top-[1.2vw] left-[4%] flex gap-[5vw] sm:gap-[1vw]">
-      <div className="user">
-        <div className="avatar w-[8vw] h-[8vw] sm:w-[4vw] sm:h-[4vw] rounded-full relative flex items-center justify-center flex-col">
-          <AvatarBorder className=" w-full h-full  absolute top-0 left-0 z-[1]" />
-          <div className="relative w-[90%] h-[90%] ">
+      <div
+        style={{
+          backgroundImage: "url('/assets/images/header-bg.png')",
+          backgroundPosition: "left",
+          backgroundSize: "contain",
+        }}
+        className="bg-no-repeat portrait:w-[35vh] landscape:w-[35vw] h-full flex items-start justify-between landscape:px-[1vw] portrait:px-[1vh]"
+      >
+        {/* Profile Section */}
+        <div className="flex items-start landscape:gap-x-[1vw] portrait:gap-x-[1vh]">
+          <Image
+            src={`/avatar/avatar${avatar}.png`}
+            alt='profile_picture'
+            width={400}
+            height={400}
+            quality={100}
+            className="landscape:w-[6vw] border-2 rounded-full p-1 landscape:h-[6vw] portrait:w-[6vh] portrait:h-[6vh] object-cover"
+          />
+          <span className="font-semibold text-white portrait:pt-[1.2vh] landscape:pt-[1.2vw] landscape:text-[1.4vw] portrait:text-[1.4vh] tracking-wider uppercase">
+          {data?.username}
+          </span>
+        </div>
+
+        {/* Coin Balance Section (Now inside background) */}
+        <div className="relative flex portrait:mr-[2vh] landscape:mr-[2vw] landscape:mt-[.6vw] portrait:mt-[.6vh] items-center bg-black/80 rounded-full px-[1.1vw] py-[.2vw] portrait:px-[1.1vh] portrait:py-[.3vh] border border-gray-700">
+          {/* Coin Image */}
+          <div className="absolute left-0 -translate-x-1/2">
             <Image
-              src={`/avatar/avatar${avatar}.png`}
-              alt={data?.username}
-              fill
-              className="object-cover"
+              src="/assets/images/coin.png"
+              alt="Coins"
+              width={65}
+              height={65}
+              quality={100}
+              className="object-contain w-[3vw] h-[3vw] portrait:w-[3vh] portrait:h-[3vh]"
             />
           </div>
-          <Connector
-            name={data?.username}
-            className="sm:w-[10vw] w-[12vw] h-auto absolute flex flex-col items-center justify-center -bottom-[5.3vw] sm:-bottom-[68%] left-1/2 transform -translate-x-1/2 z-[2]"
-          />
+          {/* Balance Text */}
+          <p className="portrait:ml-[1.5vh] tracking-wide landscape:ml-[1.5vw] 
+  bg-gradient-to-b from-[#F6F693] via-[#FCC20C] to-[#EE9502] 
+  bg-clip-text text-transparent 
+  portrait:text-[1.1vh] landscape:text-[1.1vw] font-bold">
+             {parseFloat((credit ?? 0).toFixed(1))}
+          </p>
         </div>
       </div>
-      <div className="relative p-[0.1vw] h-fit rounded-[2vw] bg-gradient-to-b from-[#184260] to-[#666666] flex items-center justify-center">
-        <div className="p-[0.15vw] h-fit rounded-[2vw] bg-[#00000091] flex items-center justify-center">
-          <div className=" flex items-center bg-[#00000091] border-2 border-black h-fit rounded-[10vw] sm:rounded-[2vw] space-x-[7vw] pr-[1vw] sm:space-x-[3vw] sm:pr-4 ">
-            <div className="absolute coin sm:w-[3vw] w-[7vw] h-[7vw] sm:h-[3vw] left-[-0.5vw] ">
-              <Logo className="h-full w-full" />
-            </div>
-            <span className="text-[4vw] sm:text-[1.5vw] ml-[2.5vw] bg-gradient-to-b from-[#D4DA8F] via-[#BC7300] via-[50.91%] to-[#FFECB6] text-transparent bg-clip-text font-[400]">
-              {parseFloat((credit ?? 0).toFixed(1))}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 };
 

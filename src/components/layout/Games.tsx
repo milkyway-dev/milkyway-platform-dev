@@ -151,13 +151,7 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
   }, []);
 
   return (
-    <div className="Carousel relative">
-      {!gamesData?.isUnderMaintenance && (
-        <Sidebar
-          onSelectCategory={handleFetchGames}
-          selectedCategory={selectedCategory}
-        />
-      )}
+    <div className="Carousel relative flex items-center">
       <Carousel className="sm:w-[100%] w-[95%] m-auto" opts={{ loop: true }}>
         <CarouselContent className="min-h-[66.5vw] sm:min-h-[37vw]">
           <GamesGrid
@@ -170,6 +164,12 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
         <CarouselPrevious className="CarouselPrevious w-[5%]" />
         <CarouselNext className="CarouselNext w-[5%]" />
       </Carousel>
+      {!gamesData?.isUnderMaintenance && (
+        <Sidebar
+          onSelectCategory={handleFetchGames}
+          selectedCategory={selectedCategory}
+        />
+      )}
       {open && (
         <div
           className={` w-[100vh] h-[100vw] sm:h-screen sm:w-screen z-[99] bg-black bg-opacity-50 flex items-center justify-center fixed top-0 left-0`}
