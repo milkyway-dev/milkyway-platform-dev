@@ -151,9 +151,9 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
   }, []);
 
   return (
-    <div className="Carousel relative flex items-center">
+    <div className="Carousel  relative flex items-center justify-center">
       <Carousel className="sm:w-[100%] w-[95%] m-auto" opts={{ loop: true }}>
-        <CarouselContent className="min-h-[66.5vw] sm:min-h-[37vw]">
+        <CarouselContent className="min-h-[67.5vw] sm:min-h-[38vw]">
           <GamesGrid
             favgame={favgame}
             data={gamesData}

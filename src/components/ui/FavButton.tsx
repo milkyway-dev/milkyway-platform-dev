@@ -44,7 +44,7 @@ const FavButton: React.FC<FavButtonProps> = ({ favgame, id }) => {
 
   return (
     <button
-      className="absolute right-[-6px] top-[2vw] z-10 w-[25%] h-[25%]"
+      className="absolute right-[0px] top-[2vw] z-10 w-[25%] h-[25%]"
       onClick={(event) => handleClick(event, id, isFav ? "remove" : "add")}
     >
       {gamefav.includes(id) || isFav ? (

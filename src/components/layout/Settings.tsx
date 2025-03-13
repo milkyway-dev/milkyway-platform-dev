@@ -41,7 +41,7 @@ const Settings = () => {
 
     return (
         <>
-            <div className="flex justify-center portrait:pl-[2vh] landscape:pl-[2vw] items-center portrait:gap-x-[2.5vh] landscape:gap-x-[2.5vw] pt-[.6vw]">
+            <div className="flex justify-center  portrait:pl-[2vh] landscape:pl-[2vw] items-center portrait:gap-x-[2.5vh] landscape:gap-x-[2.5vw] pt-[.6vw]">
                 {/* Icon 1 */}
                 <button onClick={() => handleModalOpen("SHARE")} className="flex cursor-pointer hover:opacity-50 transition-all flex-col  items-center">
                     <Image src="/assets/images/share.png" alt="Share" width={100} height={100} quality={100} className='portrait:w-[1.7vh] portrait:h-[1.7vh] landscape:w-[1.7vw] landscape:h-[1.7vw]' />

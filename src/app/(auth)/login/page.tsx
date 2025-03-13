@@ -146,74 +146,108 @@ const Login = () => {
     setLoading(false);
   };
   return (
-    <div className="relative items-center sm:items-start w-screen sm:w-full -rotate-90 sm:rotate-0 h-auto flex justify-evenly">
-      <Image
-        src="/login.png"
-        alt="login-bg"
-        fill
-        priority={true}
-        quality={100}
-        objectPosition="center"
-        className=" object-cover  w-full"
-      />
-      <form
-        onSubmit={handleSubmit}
-        className="z-[3] p-[3%] sm:static flex justify-center flex-col gap-[3vw] sm:gap-[3vw] w-[80%] sm:w-[35%] h-[35vh] sm:h-[50%] m-auto absolute top-auto "
-        autoComplete="off"
-      >
-        <div className="bg-gradient-to-b from-[#fff] p-[1px] from-[0%] via-[#a8d4f8] via-[50.72%] to-[#4b97ff] rounded-[1vw]">
-          <div className="w-[100%] bg-gradient-to-b from-[#0e052d] to-[#2b3953] rounded-[1vw] h-full">
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={handleUsernameChange}
-              placeholder="ACCOUNT"
-              className=" caret-blue-500 placeholder-transparent sm:placeholder:text-[2vw] placeholder:text-[4vw] py-[3vw] sm:pb-[1vw] sm:pt-[1vw] px-[2vw] focus:outline-none bg-gradient-to-b from-[#fff] from-[0%] via-[#a8d4f8] via-[50.72%] to-[#4b97ff] bg-clip-text text-transparent w-full sm:text-[2vw] text-[4vw]"
-              autoComplete="off"
+    <>
+      <div className="relative items-center sm:items-start w-screen sm:w-full -rotate-90 sm:rotate-0 h-auto flex justify-evenly">
+        <Image
+          src="/assets/images/bgimage.png"
+          alt="login-bg"
+          fill
+          priority={true}
+          quality={100}
+          objectPosition="center"
+          className=" object-cover  w-full"
+        />
+        <div className="relative w-full sm:w-[45%]  min-h-screen sm:min-h-[20vw] sm:mr-0 sm:h-[50vw] m-auto">
+         & */}
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="z-[3] p-[3%] sm:static flex justify-center flex-col gap-[2vw] sm:gap-[2vw] w-[80%] sm:w-[50%] h-[35vh] sm:h-[50%] m-auto absolute top-auto "
+          autoComplete="off"
+        >
+          <div className="flex justify-center">
+          <Image
+            src={'/assets/images/logo.webp'}
+              alt="Power Panda Logo"
+              width={1000}
+              height={1000}
+              quality={100}
+            className="w-[50%] sm:w-[40%]"
+          />
+        </div>
+          {/* Input Field Component */}
+          {['ACCOUNT', 'PASSWORD'].map((placeholder, idx) => (
+            <div
+              key={idx}
+              className="w-full lg:w-[70%] mx-auto flex items-center justify-center bg-gradient-to-t border-t-[3.5px] border-yellow-400 border-b-[4px] from-[#255510] via-[#0E4010] to-[#1A410F] rounded-full "
+            >
+              <Image
+                src={'/assets/images/inputframe.webp'}
+                alt="Input Frame"
+                quality={100}
+                width={200}
+                height={200}
+                className="w-[1.5rem] lg:w-[2rem]"
+              />
+              <input
+                type={placeholder === 'PASSWORD' ? 'password' : 'text'}
+                placeholder={placeholder}
+                onChange={placeholder === 'ACCOUNT' ? handleUsernameChange : handlePasswordChange}
+                className="w-full pl-4 py-3 lg:py-3 text-xs bg-transparent lg:text-2xl border-[3.5px] border-[#335a06] text-yellow-400 placeholder:text-yellow-400  font-bold bg-no-repeat bg-contain outline-none"
+                style={{ fontFamily: 'Macondo' }}
+              />
+              <Image
+                src={'/assets/images/inputframe.webp'}
+                alt="Input Frame"
+                quality={100}
+                width={200}
+                height={200}
+                className="w-[1.5rem] lg:w-[2rem] rotate-180"
+              />
+            </div>
+          ))}
+
+          {/* Login Button */}
+          <div
+            className="w-[70%] sm:w-[50%]  flex items-center justify-center border-t-[3.5px] rounded-full border-yellow-400 border-b-[3.5px]  mx-auto"
+            style={{
+              background:
+                "radial-gradient(circle at bottom, #F88D4D 0%, #AC1616 30%, #7A2525 70%, #4E1F1F 100%)",
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.5)",
+            }}
+          >
+            <Image
+              src={'/assets/images/inputframe.webp'}
+              alt="Input Frame"
+              quality={100}
+              width={200}
+              height={200}
+              className="w-[1.5rem] lg:w-[2rem]"
+            />
+            <button
+              className="w-full border-[3.5px] py-2 sm:py-3 text-yellow-400 text-xs lg:text-2xl font-bold outline-none"
+              style={{
+                borderImage: "linear-gradient(to bottom, #652020, #a62b10, #a3290f) 1",
+                fontFamily: 'Macondo',
+              }}
+            >
+              LOGIN
+            </button>
+            <Image
+              src={'/assets/images/inputframe.webp'}
+              alt="Input Frame"
+              quality={100}
+              width={200}
+              height={200}
+              className="w-[1.5rem] lg:w-[2rem] rotate-180"
             />
           </div>
-        </div>
-        <div className="bg-gradient-to-b from-[#fff] p-[1px] from-[0%] via-[#a8d4f8] via-[50.72%] to-[#4b97ff]  rounded-[1vw]">
-          <div className="w-[100%] bg-gradient-to-b from-[#0e052d] to-[#2b3953] rounded-[1vw] h-[100%] ">
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-              placeholder="PASSWORD"
-              className="placeholder-transparent sm:placeholder:text-[2vw] placeholder:text-[4vw] py-[3vw] sm:pb-[1vw] sm:pt-[1vw] px-[2vw] focus:outline-none bg-gradient-to-b from-[#fff] from-[0%] via-[#a8d4f8] via-[50.72%] to-[#4b97ff] bg-clip-text text-transparent w-full sm:text-[2vw] text-[4vw]"
-              autoComplete="new-password"
-            ></input>
-          </div>
-        </div>
-        <div className="sm:h-[5vw] h-[10vw] w-auto">
-          <CustomButton type="submit" text="Login" />
-        </div>
-        <p
-          onClick={() => handleModalOpen("Note")}
-          className="uppercase sm:text-[2vw] text-[4vw] sm:text-left text-center bg-clip-text text-transparent bg-gradient-to-b from-[#F7C53B] via-[#C08C3A] to-[#DBC731]"
-        >
-          Forgot password?
-        </p>
-      </form>
-      <Modal
-        isOpen={open}
-        setOpen={setOpen}
-        modalType={modalType}
-        setModalType={setModalType}
-      >
-        <ForgotPassword />
-      </Modal>
-      <div className="relative w-full sm:w-[45%]  min-h-screen sm:min-h-[20vw] sm:mr-0 sm:h-[50vw] m-auto">
-        <Image
-          src="/character.png"
-          alt="login-character"
-          fill
-          className="z-[2] sm:object-contain bottom-0"
-        />
+        </form>
       </div>
-    </div>
+
+
+
+    </>
   );
 };
 

@@ -33,10 +33,10 @@ const User = ({ data }: any) => {
           backgroundPosition: "left",
           backgroundSize: "contain",
         }}
-        className="bg-no-repeat portrait:w-[35vh] landscape:w-[35vw] h-full flex items-start justify-between landscape:px-[1vw] portrait:px-[1vh]"
+        className="bg-no-repeat  portrait:w-[35vh] landscape:w-[35vw] h-full flex items-start justify-between landscape:px-[1vw] portrait:px-[1vh]"
       >
         {/* Profile Section */}
-        <div className="flex items-start landscape:gap-x-[1vw] portrait:gap-x-[1vh]">
+        <div className="flex items-start z-[3] landscape:gap-x-[1vw] portrait:gap-x-[1vh]">
           <Image
             src={`/avatar/avatar${avatar}.png`}
             alt='profile_picture'

@@ -21,8 +21,10 @@ const Home = async () => {
         objectPosition="center"
         className="z-[-2] object-cover"
       />
-      <Header />
-      <Games favgame={favGames?.others} initialGames={initialGames} />
+        <Header />
+        <Games favgame={favGames?.others} initialGames={initialGames} />
+        <Footer />
+
       {/* Left Sugar Cane Image */}
       <Image
         src="/assets/images/suger-cane-left.png"

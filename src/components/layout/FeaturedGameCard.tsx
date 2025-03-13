@@ -16,7 +16,7 @@ const FeaturedGameCard: React.FC<FeaturedGameCardProps> = ({ src }) => {
       <Image
           src={'/assets/images/featured-frame.png'}
           fill
-          className=" w-full h-full z-50  rounded-[1vw]"
+          className="w-full h-full z-50  rounded-[1vw]"
           alt={'featured-frame'}
         />
         <Image

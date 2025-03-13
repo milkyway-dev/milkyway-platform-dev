@@ -14,7 +14,7 @@ const Header = async () => {
 
   return (
     <>
-      <div className="portrait:h-[4.5vh] z-[-2] flex items-center  landscape:h-[4.5vw] relative w-full">
+      <div className="portrait:h-[4.5vh] flex items-center  landscape:h-[4.5vw] relative w-full">
         <div className='portrait:w-[65vh] landscape:w-[65vw] flex items-start h-full'>
           <User data={decodedToken} />
           <Settings />
