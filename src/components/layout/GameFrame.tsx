@@ -100,6 +100,7 @@ const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
                 socketURL: config.server,
                 console: config.nodeEnv === "production" ? false : true,
                 loaderUrl: config.loaderUrl,
+                nameSpace: config.namespace,
               },
               `${data?.url}`
             );

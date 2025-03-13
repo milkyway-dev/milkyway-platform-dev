@@ -54,7 +54,6 @@ export const SocketProvider: React.FC<{
           token,
           origin: config.platform,
          playgroundId: platformId,
-         nameSpace: config.namespace,
         },
         extraHeaders: {
           Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
