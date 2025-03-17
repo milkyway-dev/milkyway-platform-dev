@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   Carousel,
@@ -14,6 +14,7 @@ import Sidebar from "./Sidebar";
 import Loader from "../ui/Loader";
 import { fetchGames } from "@/src/lib/actions";
 import { Game, Data } from "@/src/lib/types";
+import { useAppSelector } from "@/src/lib/redux/hooks";
 
 interface GamesProps {
   favgame: Game[]; // List of favorite games
@@ -33,6 +34,20 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
   const [gamesData, setGamesData] = useState<Data>(
     transformGames(initialGames)
   );
+
+  const move = useAppSelector((state) => state.user.moveX);
+  const prevMove = useRef<number>(move); 
+
+  useEffect(() => {
+    if (move !== prevMove.current) {
+      if (move > prevMove.current) {
+        document.querySelector<HTMLButtonElement>(".CarouselNext")?.click();
+      } else {
+        document.querySelector<HTMLButtonElement>(".CarouselPrevious")?.click();
+      }
+      prevMove.current = move; 
+    }
+  }, [move]);
 
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [loading, setLoading] = useState<boolean>(false);
@@ -260,7 +275,7 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
         </div>
       )}
       {loading ? (
-        <div className="fixed top-0 left-0 h-full w-full bg-[#0000003b]">
+        <div className="fixed z-[9999] top-0 left-0 h-full w-full bg-[#0000003b]">
           <Loader />
         </div>
       ) : (

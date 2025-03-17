@@ -51,8 +51,8 @@ const GamesGrid: React.FC<GamesGridProps> = ({
 
   // Create chunks for the slides after the first one
   const remainingChunks = chunkArray(
-    mergedArray?.slice(category === "all" ? 8 : 10),
-    10
+    mergedArray?.slice(category === "all" ? 6 : 8),
+    8
   );
 
   useEffect(() => {
@@ -62,10 +62,10 @@ const GamesGrid: React.FC<GamesGridProps> = ({
 
   return (
     <>
-      <CarouselItem className="flex justify-center m-auto w-[80%]">
+      <CarouselItem className="flex justify-center gap-x-[4vw] m-auto">
         {featured?.length > 0 && category === "all" && (
-          <div className="w-[20%]  h-auto py-[3%]">
-            <div className="w-[90%] h-full">
+          <div className="w-[25%]  h-auto py-[3%]">
+            <div className="w-[95%] h-full">
               <div className="rounded-[0.9vw] w-full h-full">
                   <Carousel
                     plugins={[
@@ -90,8 +90,8 @@ const GamesGrid: React.FC<GamesGridProps> = ({
           </div>
         )}
         {category === "all" ? (
-          <div className="grid grid-cols-4 gap-[1.4vw] sm:min-h-[36vw] min-h-[66.5vw]  w-[65%] py-[3%]">
-            {mergedArray?.slice(0, 8).map((game, index) => (
+          <div className="grid grid-cols-3 portrait:gap-y-[3vw] portrait:gap-x-[5vw] landscape:gap-y-[3vh] landscape:gap-x-[7vh] sm:min-h-[36vw] min-h-[66.5vw]  w-[58%] py-[3%]">
+            {mergedArray?.slice(0, 6).map((game, index) => (
               <GameCard
                 favgame={favgame}
                 key={index}
@@ -101,8 +101,8 @@ const GamesGrid: React.FC<GamesGridProps> = ({
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-5 gap-[1.4vw] w-[85%] sm:min-h-[36vw] min-h-[66.5vw] py-[3%]">
-            {mergedArray?.slice(0, 10).map((game, index) => (
+          <div className="grid grid-cols-4  portrait:gap-y-[3vw] portrait:gap-x-[5vw] landscape:gap-y-[3vh] landscape:gap-x-[5vh] w-[72%] sm:min-h-[36vw] min-h-[66.5vw] py-[3%]">
+            {mergedArray?.slice(0, 8).map((game, index) => (
               <GameCard
                 favgame={favgame}
                 key={index}
@@ -115,7 +115,7 @@ const GamesGrid: React.FC<GamesGridProps> = ({
       </CarouselItem>
       {remainingChunks?.map((chunk, chunkIndex) => (
         <CarouselItem key={chunkIndex}>
-          <div className="grid grid-cols-5 gap-[1.4vw] w-[85%] py-[3%] m-auto">
+          <div className="grid grid-cols-4  portrait:gap-y-[3vw] portrait:gap-x-[5vw] landscape:gap-y-[3vh] landscape:gap-x-[5vh] w-[72%] py-[3%] m-auto">
             {chunk?.map((game, index) => (
               <GameCard
                 favgame={favgame}

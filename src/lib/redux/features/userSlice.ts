@@ -5,12 +5,14 @@ interface UserState {
   username: string;
   credits: number,
   avatar: number,
+  moveX: number
 }
 
 const initialState: UserState = {
   username: "",
   credits: 0,
   avatar: 1,
+  moveX:0
 };
 
 const userSlice = createSlice({
@@ -34,8 +36,11 @@ const userSlice = createSlice({
       state.credits = 0;
       state.avatar = 0;
     },
+    setMoveX: (state,acttion) => {
+      state.moveX = acttion.payload;
+    }
   }
 });
 
-export const { setUsername, setCredits, setAvatar, updateCredits, resetUser} = userSlice.actions;
+export const { setUsername, setCredits, setAvatar, updateCredits, resetUser,setMoveX} = userSlice.actions;
 export default userSlice.reducer;

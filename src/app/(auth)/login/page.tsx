@@ -154,15 +154,15 @@ const Login = () => {
           fill
           priority={true}
           quality={100}
-          objectPosition="center"
+          objectPosition="right"
           className=" object-cover  w-full"
         />
         <div className="relative w-full sm:w-[45%]  min-h-screen sm:min-h-[20vw] sm:mr-0 sm:h-[50vw] m-auto">
-         & */}
+    
         </div>
         <form
           onSubmit={handleSubmit}
-          className="z-[3] p-[3%] sm:static flex justify-center flex-col gap-[2vw] sm:gap-[2vw] w-[80%] sm:w-[50%] h-[35vh] sm:h-[50%] m-auto absolute top-auto "
+          className="z-[3]  sm:static flex justify-center flex-col portrait:gap-[2vh] landscape:gap-[2vw] w-[90%] sm:w-[50%] h-[35vh] sm:h-[50%] m-auto absolute top-auto "
           autoComplete="off"
         >
           <div className="flex justify-center">
@@ -172,7 +172,7 @@ const Login = () => {
               width={1000}
               height={1000}
               quality={100}
-            className="w-[50%] sm:w-[40%]"
+            className="w-[50%] sm:w-[35%]"
           />
         </div>
           {/* Input Field Component */}
@@ -187,13 +187,13 @@ const Login = () => {
                 quality={100}
                 width={200}
                 height={200}
-                className="w-[1.5rem] lg:w-[2rem]"
+                className="portrait:w-[2.5vh] landscape:w-[2.5vw] lg:landscape:w-[1.5vw]"
               />
               <input
                 type={placeholder === 'PASSWORD' ? 'password' : 'text'}
                 placeholder={placeholder}
                 onChange={placeholder === 'ACCOUNT' ? handleUsernameChange : handlePasswordChange}
-                className="w-full pl-4 py-3 lg:py-3 text-xs bg-transparent lg:text-2xl border-[3.5px] border-[#335a06] text-yellow-400 placeholder:text-yellow-400  font-bold bg-no-repeat bg-contain outline-none"
+                className="w-full pl-4 portrait:py-[1vh] landscape:py-[.8vw] lg:landscape:py-[.5vw] text-xs bg-transparent lg:text-2xl border-[3.5px] border-[#335a06] text-yellow-400 placeholder:text-yellow-400  font-bold bg-no-repeat bg-contain outline-none"
                 style={{ fontFamily: 'Macondo' }}
               />
               <Image
@@ -202,7 +202,7 @@ const Login = () => {
                 quality={100}
                 width={200}
                 height={200}
-                className="w-[1.5rem] lg:w-[2rem] rotate-180"
+                className="portrait:w-[2.5vh] landscape:w-[2.5vw] lg:landscape:w-[1.5vw] rotate-180"
               />
             </div>
           ))}
@@ -222,10 +222,10 @@ const Login = () => {
               quality={100}
               width={200}
               height={200}
-              className="w-[1.5rem] lg:w-[2rem]"
+              className="portrait:w-[2.5vh] landscape:w-[2.5vw] lg:landscape:w-[1.5vw]"
             />
             <button
-              className="w-full border-[3.5px] py-2 sm:py-3 text-yellow-400 text-xs lg:text-2xl font-bold outline-none"
+              className="w-full border-[3.5px] portrait:py-[1vh] landscape:py-[.8vw] lg:landscape:py-[.5vw] text-yellow-400 text-xs lg:text-2xl font-bold outline-none"
               style={{
                 borderImage: "linear-gradient(to bottom, #652020, #a62b10, #a3290f) 1",
                 fontFamily: 'Macondo',
@@ -239,7 +239,7 @@ const Login = () => {
               quality={100}
               width={200}
               height={200}
-              className="w-[1.5rem] lg:w-[2rem] rotate-180"
+              className="portrait:w-[2.5vh] landscape:w-[2.5vw] lg:landscape:w-[1.5vw] rotate-180"
             />
           </div>
         </form>

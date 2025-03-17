@@ -5,9 +5,9 @@
 @layer base {
   body {
     @apply cursor-custom;
-    background: #0f172a;
+    background: #0d2907;
     overflow: hidden;
-    font-family: "Barlow Condensed", sans-serif;
+      font-family: var(--font-macondo);
   }
 }
 .star {
@@ -359,8 +359,10 @@ input:focus::placeholder {
 } */
 
 :root {
-  font-family: Barlow Condensed, sans-serif;
+  --font-macondo: "Macondo Swash Caps", cursive;
 }
+
+
 
 /* .wave-bg {
   --stripes: repeating-linear-gradient(

@@ -18,7 +18,7 @@ const GameCard: React.FC<GameCardProps> = ({ favgame, src, type }) => {
     <>
       <Link
         href={`/${src.slug}`}
-        className=" h-[25vw] sm:h-[15vw] gamecar relative z-[2]"
+        className="h-[33vw] sm:h-[16vw] gamecar relative z-[2]"
       >
         <FavButton favgame={favgame} id={src?._id} />
         <GameCardImg src={src?.thumbnail} type={type} />

@@ -4,7 +4,7 @@ import StoreProvider from "@/src/lib/redux/Provider";
 import { SocketProvider } from "@/src/lib/context/Socket";
 
 export const metadata = {
-  title: "El Dorado Spin",
+  title: "power panda",
   description: "Gaming platform",
 };
 

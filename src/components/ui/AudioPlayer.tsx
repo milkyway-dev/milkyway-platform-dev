@@ -11,53 +11,33 @@ const AudioPlayer = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    // Attempt to play the audio when the component mounts
     const handlePlayAudio = async () => {
       try {
         await playAudio();
         setIsPlaying(true);
       } catch (err: any) {
         if (err.name === "NotAllowedError") {
-          setError("Autoplay failed. Click the button to play the audio.");
+          setError("Autoplay failed. Click to play.");
         } else {
-          setError("Failed to play the audio.");
+          setError("Failed to play audio.");
         }
         console.error("Audio play error:", err);
       }
     };
 
-    handlePlayAudio();
-
-    // Error event listener
-    const handleError = () => {
-      setError("An error occurred while trying to load the audio");
-      console.error("Audio loading error");
+    const handleUserInteraction = async () => {
+      await handlePlayAudio();
+      document.removeEventListener("click", handleUserInteraction);
+      document.removeEventListener("keydown", handleUserInteraction);
     };
 
-    audio.addEventListener("error", handleError);
+    // Add event listeners for first user interaction
+    document.addEventListener("click", handleUserInteraction);
+    document.addEventListener("keydown", handleUserInteraction);
 
-    // Pause audio when window is out of focus
-    const handleBlur = () => {
-      if (audio && !audio.paused) {
-        pauseAudio();
-      }
-    };
-
-    // Resume audio when window is back in focus
-    const handleFocus = () => {
-      if (audio && audio.paused) {
-        handlePlayAudio(); // Re-attempt to play the audio
-      }
-    };
-
-    window.addEventListener("blur", handleBlur);
-    window.addEventListener("focus", handleFocus);
-
-    // Clean up the event listener on component unmount
     return () => {
-      audio.removeEventListener("error", handleError);
-      window.removeEventListener("blur", handleBlur);
-      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("click", handleUserInteraction);
+      document.removeEventListener("keydown", handleUserInteraction);
     };
   }, [audioRef]);
 
@@ -68,13 +48,7 @@ const AudioPlayer = () => {
   }, [volume, audioRef]);
 
   return (
-    <audio
-      ref={audioRef}
-      src={"/audio/bg-audio.wav"}
-      autoPlay
-      loop
-      className="hidden"
-    />
+    <audio ref={audioRef} src="/audio/bg-audio.mp3" loop className="hidden" />
   );
 };
 

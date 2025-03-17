@@ -5,12 +5,12 @@ import Header from "@/src/components/layout/Header";
 import Footer from "@/src/components/layout/Footer";
 import { fetchGames } from "@/src/lib/actions";
 
-const Home = async () => {
+const page = async () => {
   const initialGames = await fetchGames();
   const favGames = await fetchGames("fav");
 
   return (
-    <section className="relative w-full  overflow-hidden">
+    <section className="relative w-full flex flex-col justify-center overflow-hidden">
       <div className="wave-bg w-full h-full absolute top-0 left-0"></div>
       <Image
         src={"/assets/images/bg.png"}
@@ -22,8 +22,8 @@ const Home = async () => {
         className="z-[-2] object-cover"
       />
         <Header />
-        <Games favgame={favGames?.others} initialGames={initialGames} />
-        <Footer />
+        <Games  favgame={favGames?.others} initialGames={initialGames} />
+        <Footer initialGames={initialGames}/>
 
       {/* Left Sugar Cane Image */}
       <Image
@@ -47,4 +47,4 @@ const Home = async () => {
   );
 };
 
-export default Home;
+export default page;
