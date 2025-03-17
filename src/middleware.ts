@@ -21,18 +21,19 @@ export default function middleware(request: NextRequest) {
   const awsAlbTG = request.cookies.get("AWSALBTG");
   const awsAlbTGCoRS = request.cookies.get("AWSALBTGCORS");
 
-  // if ((!awsAlbTG || !awsAlbTGCoRS) && !isPublicPath) {
-  //   const response = NextResponse.redirect(new URL("/login", request.url));
-  //   response.cookies.delete("token");
-  //   response.cookies.delete("AWSALBTG");
-  //   response.cookies.delete("AWSALBTGCORS");
-  //   return response;
-  // }
+  if ((!awsAlbTG || !awsAlbTGCoRS) && !isPublicPath) {
+    const response = NextResponse.redirect(new URL("/login", request.url));
+    response.cookies.delete("token");
+    response.cookies.delete("AWSALBTG");
+    response.cookies.delete("AWSALBTGCORS");
+    return response;
+  }
 
   if (token?.value && isTokenExpired(token.value)) {
     const response = NextResponse.redirect(new URL("/logout", request.url));
     response.cookies.delete("token");
-
+    response.cookies.delete("AWSALBTG");
+    response.cookies.delete("AWSALBTGCORS");
     return response;
   }
 
