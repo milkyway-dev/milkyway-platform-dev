@@ -69,10 +69,10 @@ export const getGameById = async (id: string) => {
       method: "GET",
       credentials: "include",
       headers: headers,
-
+      cache: "no-cache",
     });
     const data = await response.json();
-    console.log(data);
+    console.log("Game data", data);
     return data;
   } catch (error: unknown) {
     console.error(error);
