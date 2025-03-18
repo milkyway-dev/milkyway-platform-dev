@@ -13,8 +13,8 @@ const Header = async () => {
   const decodedToken = await jwtDecode(token as string);
 
   return (
-    <>
-      <div className="portrait:h-[4.5vh] flex items-center  landscape:h-[4.5vw] relative w-full">
+    <div className="pt-[.1vw]">
+      <div className="portrait:h-[4.5vh] flex items-center   landscape:h-[4.5vw] relative w-full">
         <div className='portrait:w-[65vh] landscape:w-[65vw] flex items-start h-full'>
           <User data={decodedToken} />
           <Settings />
@@ -24,7 +24,7 @@ const Header = async () => {
           <LogoutButton />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

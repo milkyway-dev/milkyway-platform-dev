@@ -1,4 +1,5 @@
 "use client";
+
 import { setMoveX } from "@/src/lib/redux/features/userSlice";
 import { useAppDispatch } from "@/src/lib/redux/hooks";
 import React, { useState, useRef, useEffect } from "react";
@@ -8,34 +9,29 @@ const Footer = ({ initialGames }: any) => {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const [progress, setProgress] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const totalGames = initialGames?.others?.length || 1;
-  const stepCount = Math.ceil(totalGames / 8); // Divide data into 10-item chunks
-  const stepSize = 100 / (stepCount - 1); // Percentage per step
+  const stepCount = Math.ceil(totalGames / 8);
+  const stepSize = 100 / (stepCount - 1);
 
-  const getClosestStep = (value: number) => {
-    return Math.round(value / stepSize) * stepSize;
-  };
+  const getClosestStep = (value: number) => Math.round(value / stepSize) * stepSize;
 
   const updateProgress = (clientX: number, snap: boolean = false) => {
     if (!progressBarRef.current) return;
 
     const rect = progressBarRef.current.getBoundingClientRect();
     let newProgress = ((clientX - rect.left) / rect.width) * 100;
-    newProgress = Math.max(0, Math.min(100, newProgress)); // Clamp between 0-100
+    newProgress = Math.max(0, Math.min(100, newProgress));
 
-    if (snap) {
-      newProgress = getClosestStep(newProgress); // Snap to step when drag ends
-    }
-
+    if (snap) newProgress = getClosestStep(newProgress);
     setProgress(newProgress);
 
-    // Calculate current step index
     const currentStep = Math.round(newProgress / stepSize);
-    dispatch(setMoveX(currentStep)); // Dispatch only the step index
+    dispatch(setMoveX(currentStep));
   };
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     isDragging.current = true;
   };
 
@@ -45,13 +41,9 @@ const Footer = ({ initialGames }: any) => {
 
   const handleMouseUp = (e: MouseEvent) => {
     if (isDragging.current) {
-      updateProgress(e.clientX, true); // Snap on release
+      updateProgress(e.clientX, true);
       isDragging.current = false;
     }
-  };
-
-  const handleTouchStart = () => {
-    isDragging.current = true;
   };
 
   const handleTouchMove = (e: TouchEvent) => {
@@ -60,10 +52,19 @@ const Footer = ({ initialGames }: any) => {
 
   const handleTouchEnd = (e: TouchEvent) => {
     if (isDragging.current) {
-      updateProgress(e.changedTouches[0].clientX, true); // Snap on release
+      updateProgress(e.changedTouches[0].clientX, true);
       isDragging.current = false;
     }
   };
+
+  useEffect(() => {
+    const checkFullscreen = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", checkFullscreen);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", checkFullscreen);
+    };
+  }, []);
 
   useEffect(() => {
     document.addEventListener("mousemove", handleMouseMove);
@@ -79,37 +80,39 @@ const Footer = ({ initialGames }: any) => {
     };
   }, []);
 
+  if (!isFullscreen) return null;
+
   return (
     <footer className="flex items-center justify-start portrait:pb-[1.5vh] landscape:pb-[1.5vw] select-none">
       <div className="w-[80%] pl-[10%] text-white">
         <div
           ref={progressBarRef}
-          className="relative portrait:h-[1.5vh] landscape:h-[1.5vw] bg-black border border-[#C89C6C] rounded-full"
+          className="relative portrait:h-[1.5vh] landscape:h-[1.5vw] bg-gradient-to-t from-black to-[#3a090c] border-2 border-[#C88856] rounded-full"
         >
           {/* Progress Bar */}
           <div
             className="absolute top-0 left-0 h-full rounded-full bg-[#6B0000]"
-            style={{ width: `${progress}%` }} // Ensure it stays within 0-100%
+            style={{ width: `${progress}%` }}
           ></div>
 
           {/* Draggable Thumb */}
           <div
             className="absolute z-[10] -translate-y-1/2 
-              portrait:w-[2.4vh] portrait:bottom-[-.5vh] landscape:bottom-[-.5vw] lg:landscape:bottom-[-.3vw] portrait:h-[2.4vh]  
-              landscape:w-[2.4vw] landscape:h-[2.4vw] lg:landscape:w-[2vw] lg:landscape:h-[2vw]
-              bg-[#990000] border border-white rounded-full cursor-pointer"
+              portrait:w-[2.4vh] portrait:bottom-[-.5vh] landscape:bottom-[-.5vw] lg:landscape:bottom-[-.3vw] 
+              portrait:h-[2.4vh] landscape:w-[2.4vw] landscape:h-[2.4vw] 
+              lg:landscape:w-[2vw] lg:landscape:h-[2vw] 
+              border border-white rounded-full cursor-pointer"
             style={{
-              left: `calc(${progress}% - 1vw)`, // Center it properly
+              left: `calc(${progress}% - 1vw)`,
               transform: progress >= 100 ? "translateX(-50%)" : "translateX(50%)",
+              background: "radial-gradient(circle, #A10B16 20%, #000000 80%)",
             }}
             onMouseDown={handleMouseDown}
-            onTouchStart={handleTouchStart}
+            onTouchStart={handleMouseDown} // Fix touch not starting
           />
         </div>
       </div>
     </footer>
-
-
   );
 };
 

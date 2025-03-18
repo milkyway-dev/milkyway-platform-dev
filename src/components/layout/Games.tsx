@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-
 import {
   Carousel,
   CarouselContent,
@@ -8,7 +7,6 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 import GamesGrid from "./GamesGrid";
-
 import toast from "react-hot-toast";
 import Sidebar from "./Sidebar";
 import Loader from "../ui/Loader";

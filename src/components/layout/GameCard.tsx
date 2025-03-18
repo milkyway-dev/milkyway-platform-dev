@@ -5,6 +5,7 @@ import Image from "next/image";
 
 interface GameCardProps {
   favgame: { _id: string }[]; // Array of favorite game IDs
+  index?: number,
   src: {
     _id: string;
     slug: string;
@@ -12,16 +13,15 @@ interface GameCardProps {
   };
   type: string; // Type of the game (e.g., category or other relevant type)
 }
-
-const GameCard: React.FC<GameCardProps> = ({ favgame, src, type }) => {
+const GameCard: React.FC<GameCardProps> = ({ index,favgame, src, type }) => {
   return (
     <>
       <Link
         href={`/${src.slug}`}
-        className="h-[33vw] sm:h-[16vw] gamecar relative z-[2]"
+        className="h-[33vw] sm:h-[18vw] gamecar relative z-[2]"
       >
         <FavButton favgame={favgame} id={src?._id} />
-        <GameCardImg src={src?.thumbnail} type={type} />
+        <GameCardImg src={`/assets/images/${index}.png`} type={type} />
         {/* Frame Image */}
         <Image
           src="/assets/images/game-frame.png"

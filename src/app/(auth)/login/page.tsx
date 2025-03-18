@@ -46,6 +46,9 @@ const Login = () => {
           message="Username and password are required"
         />
       ));
+      setTimeout(() => {
+        toast.remove();
+      }, 2000); 
       return false;
     }
     return true;
@@ -131,6 +134,9 @@ const Login = () => {
             message={data.message || data.error || "Login failed"}
           />
         ));
+        setTimeout(() => {
+          toast.remove();
+        }, 2000); 
       }
     } catch (error) {
       toast.remove();
@@ -141,13 +147,16 @@ const Login = () => {
           message="An error occured! Please try again"
         />
       ));
+      setTimeout(() => {
+        toast.remove();
+      }, 2000); 
     }
 
     setLoading(false);
   };
   return (
     <>
-      <div className="relative items-center sm:items-start w-screen sm:w-full -rotate-90 sm:rotate-0 h-auto flex justify-evenly">
+      <div className="relative macando items-center sm:items-start w-screen sm:w-full -rotate-90 sm:rotate-0 h-auto flex justify-evenly">
         <Image
           src="/assets/images/bgimage.png"
           alt="login-bg"

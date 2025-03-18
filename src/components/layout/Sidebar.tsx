@@ -1794,35 +1794,59 @@ const Sidebar: React.FC<SidebarProps> = ({
   }, [viewportWidth]);
 
   const menuItems = [
-    { src: "/assets/images/all.png", alt: "All Games" ,catagory:'all'},
-    { src: "/assets/images/fav.png", alt: "Heart",catagory:'fav'},
-    { src: "/assets/images/slot.png", alt: "Slots",catagory:'slot'},
-    { src: "/assets/images/keno.png", alt: "Keno",catagory:'keno'},
-    { src: "/assets/images/other.png", alt: "Other",catagory:'other'},
+    { src: "/assets/images/all.png", alt: "All Games", catagory: 'all' },
+    { src: "/assets/images/fav.png", alt: "Heart", catagory: 'fav' },
+    { src: "/assets/images/slot.png", alt: "Slots", catagory: 'slot' },
+    { src: "/assets/images/keno.png", alt: "Keno", catagory: 'keno' },
+    { src: "/assets/images/other.png", alt: "Other", catagory: 'other' },
   ];
   return (
     <>
       <div className="portrait:w-[12vh] landscape:w-[12vw] h-auto">
-      <div className="flex flex-col items-end gap-y-[1vw] portrait:translate-x-[.5vh] landscape:translate-x-[.5vw] rounded-r-lg">
-        {menuItems?.map((item, index) => (
-          <button
-            key={index}
-            onClick={() => { setActiveIndex(index),onSelectCategory(item?.catagory)}}
-            className={`relative cursor-pointer portrait:rounded-[.6vh] landscape:rounded-[.6vw] hover:scale-90 transition-all portrait:w-[9vh] landscape:w-[9vw] 
-              ${activeIndex === index ? "shadow-[0_0_35px_rgba(255,215,0,0.7)] before:absolute before:inset-0 border border-yellow-500 before:rounded-xl before:p-[5px] before:bg-gradient-to-r before:from-[#C88856]  before:to-[#FDF6AD] before:-z-10" : "border border-transparent"}`}
-          >
-            <Image
-              src={item.src}
-              alt={item.alt}
-              width={1000}
-              height={1000}
-              quality={100}
-              className="object-contain relative z-10 bg-[#222] rounded-xl"
-            />
-          </button>
-        ))}
+        <div className="portrait:w-[12vh] landscape:w-[12vw] h-auto">
+          <div className="flex flex-col items-end gap-y-[1vw] portrait:translate-x-[.5vh] landscape:translate-x-[.7vw] rounded-r-lg">
+            {menuItems?.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setActiveIndex(index);
+                  onSelectCategory(item?.catagory);
+                }}
+                className={`relative cursor-pointer portrait:rounded-[1vh] landscape:rounded-[1vw] 
+         portrait:w-[9vh] landscape:w-[9vw] overflow-hidden
+         ${activeIndex === index && 'scale-[1.2]'}
+        `}
+              >
+                {/* Base Image */}
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  width={1000}
+                  height={1000}
+                  quality={100}
+                  className="object-contain bg-transparent relative z-10"
+                />
+
+                {/* Overlay Image when Active */}
+                {activeIndex === index && (
+                  <Image
+                    src="/assets/images/sidebar-border.png" 
+                    alt="Overlay Image"
+                    width={1000}
+                    height={1000}
+                    quality={100}
+                    className="absolute top-0 portrait:right-[.4vh] landscape:right-[.4vw] w-full h-full object-cover z-20"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+
+
+
       </div>
-    </div>
     </>
   );
 };

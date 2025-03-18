@@ -358,7 +358,7 @@ input:focus::placeholder {
   }
 } */
 
-:root {
+.macando {
   --font-macondo: "Macondo Swash Caps", cursive;
 }
 

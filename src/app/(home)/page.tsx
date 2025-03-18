@@ -37,11 +37,11 @@ const page = async () => {
       {/* Right Sugar Cane Image */}
       <Image
         src="/assets/images/suger-cane-right.png"
-        alt="Sugar Cane Left"
+        alt="Sugare Cane Right"
         width={1000}
         height={1000}
         quality={100}
-        className="absolute z-[-1] right-[-10%] bottom-0  w-auto h-[95%] "
+        className="absolute z-[-1] right-[-10%] bottom-0  w-auto h-[100%]"
       />
     </section>
   );

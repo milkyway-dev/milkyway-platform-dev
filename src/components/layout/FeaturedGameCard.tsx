@@ -16,13 +16,13 @@ const FeaturedGameCard: React.FC<FeaturedGameCardProps> = ({ src }) => {
       <Image
           src={'/assets/images/featured-frame.png'}
           fill
-          className="w-full h-full z-50  rounded-[1vw]"
+          className="w-full h-full z-50 rounded-[1vw]"
           alt={'featured-frame'}
         />
         <Image
-          src={src?.thumbnail}
+          src={'/assets/images/ladygame.png'}
           fill
-          className=" w-full portrait:py-[.3vh] landscape:py-[.3vw] h-full object-cover portrait:rounded-[2.7vh] landscape:rounded-[2.7vw]"
+          className=" w-full  h-full object-contain"
           alt={src.slug}
         />
       </div>
