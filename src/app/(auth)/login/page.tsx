@@ -5,11 +5,8 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
-import { config } from "@/src/lib/config";
-import CustomButton from "@/src/components/ui/CustomButton";
 import Notification from "@/src/components/ui/Notification";
-import Modal from "@/src/components/ui/Modal";
-import ForgotPassword from "@/src/components/ui/ForgotPassword";
+
 
 interface DecodedToken {
   role: string;
@@ -159,6 +156,7 @@ const Login = () => {
 
     setLoading(false);
   };
+
   return (
     <>
       <div className="relative macando items-center  sm:items-start w-screen sm:w-full -rotate-90 sm:rotate-0 h-auto flex justify-evenly">

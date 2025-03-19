@@ -6,7 +6,7 @@ import GameCard from "./GameCard";
 import Autoplay from "embla-carousel-autoplay";
 import Modal from "../ui/Modal";
 import Maintenance from "../ui/Maintenance";
-import { Data, Game } from "@/src/lib/types";
+import { Data, Game } from "../../lib/types";
 
 interface GamesGridProps {
   favgame: { _id: string }[];
@@ -90,7 +90,7 @@ const GamesGrid: React.FC<GamesGridProps> = ({
           </div>
         )}
         {category === "all" ? (
-          <div className="grid grid-cols-3 portrait:gap-y-[3vw] portrait:gap-x-[5vw] landscape:gap-y-[3vh] landscape:gap-x-[6vh] sm:min-h-[30vw] min-h-[66.5vw]  w-[58%] py-[3%]">
+          <div className="grid grid-cols-3 portrait:gap-y-[2vw] portrait:gap-x-[3vw] lg:landscape:gap-y-[3vh] landscape:gap-y-[2vh] landscape:gap-x-[4vh] lg:landscape:gap-x-[6vh] sm:min-h-[30vw] min-h-[66.5vw]  w-[58%] py-[3%]">
             {mergedArray?.slice(0, 6).map((game, index) => (
               <GameCard
                 favgame={favgame}

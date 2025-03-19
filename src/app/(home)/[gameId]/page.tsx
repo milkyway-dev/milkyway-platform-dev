@@ -13,7 +13,6 @@ const Page: React.FC<PageProps> = async ({ params }) => {
   const resolvedParams = await params; // Ensure params is awaited
   const { gameId } = resolvedParams;
   const src = await getGameById(gameId);
-  console.log("Game data PAGE", src);
 
   return <GameFrame data={src} />;
 };

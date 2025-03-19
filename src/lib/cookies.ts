@@ -8,7 +8,7 @@ export const getCookie = async () => {
 }; ``
 
 export const getAwsAlbCookie = async () => {
-  const cookieStore = cookies();
+  const cookieStore =await cookies();
   const awsALBCookie = cookieStore.get("AWSALBTG")?.value;
   const awsALBTGCORSCookie = cookieStore.get("AWSALBTGCORS")?.value;
   return { awsALBCookie, awsALBTGCORSCookie };

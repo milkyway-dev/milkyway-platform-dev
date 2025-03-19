@@ -1,9 +1,10 @@
 import React from "react";
 import Image from "next/image";
-import Games from "@/src/components/layout/Games";
-import Header from "@/src/components/layout/Header";
-import Footer from "@/src/components/layout/Footer";
-import { fetchGames } from "@/src/lib/actions";
+import { fetchGames } from "../../lib/actions";
+import Header from "../../components/layout/Header";
+import Games from "../../components/layout/Games";
+import Footer from "../../components/layout/Footer";
+
 
 export const fetchCache = 'force-no-store';
 
@@ -50,4 +51,4 @@ const Home = async () => {
   );
 };
 
-export default page;
+export default Home;

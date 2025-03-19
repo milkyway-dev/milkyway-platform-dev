@@ -81,7 +81,10 @@ export const getGameById = async (id: string) => {
   }
 };
 
-export const addFavGame = async (id: string, type: string): Promise<ApiResponse> => {
+export const addFavGame = async (
+  id: string,
+  type: string
+): Promise<ApiResponse> => {
   const token = await getCookie();
   const user = await getCurrentUser();
 
@@ -91,20 +94,18 @@ export const addFavGame = async (id: string, type: string): Promise<ApiResponse>
 
   try {
     const headers = await getAuthHeaders();
-
+    console.log(id,type,"id")
     const response = await fetch(
       `${config.server}/api/games/favourite/${user.id}`,
       {
         method: "PUT",
         credentials: "include",
         headers: headers,
+        body: JSON.stringify({ gameId:id, type }),
       }
     );
 
     const data: ApiResponse = await response.json();
-
-    // Trigger revalidation
-    revalidatePath('/');
 
     return data;
   } catch (error: unknown) {
@@ -114,7 +115,10 @@ export const addFavGame = async (id: string, type: string): Promise<ApiResponse>
     } else {
       return { message: "An unknown error occurred" };
     }
+  } finally {
+    revalidatePath('/')
   }
+
 };
 
 export const updatePassword = async (formData: {

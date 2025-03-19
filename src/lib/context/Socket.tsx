@@ -1,6 +1,4 @@
 "use client";
-
-
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import toast from "react-hot-toast";
@@ -8,7 +6,6 @@ import Loader from "@/src/components/ui/Loader";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { resetUser, setCredits, updateConnection } from "../redux/features/userSlice";
 import { useRouter } from "next/navigation";
-import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
 import Notification from "@/src/components/ui/Notification";
 import { getAwsAlbCookie } from "@/src/lib/cookies";
 import { config } from "../config";
@@ -44,8 +41,9 @@ export const SocketProvider: React.FC<{
     if (socketInitialized.current || !token) return;
 
     const initializeSocket = async () => {
+    
       const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
-      if (!awsALBCookie || !awsALBTGCORSCookie) {
+if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) {
         console.error("Missing AWS sticky session cookies");
         return;
       }
@@ -66,10 +64,11 @@ export const SocketProvider: React.FC<{
           origin: config.platform,
           playgroundId: platformId,
         },
+
         extraHeaders: {
           Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
         },
-      });
+      })
 
       setSocket(socketInstance);
 

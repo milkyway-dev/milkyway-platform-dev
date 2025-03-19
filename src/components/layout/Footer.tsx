@@ -1,8 +1,9 @@
 "use client";
 
-import { setMoveX } from "@/src/lib/redux/features/userSlice";
-import { useAppDispatch } from "@/src/lib/redux/hooks";
+
 import React, { useState, useRef, useEffect } from "react";
+import { useAppDispatch } from "../../lib/redux/hooks";
+import { setMoveX } from "../../lib/redux/features/userSlice";
 
 const Footer = ({ initialGames }: any) => {
   const dispatch = useAppDispatch();

@@ -28,7 +28,9 @@ const FavButton: React.FC<FavButtonProps> = ({ favgame, id }) => {
     event.preventDefault();
 
     try {
+     
       const response = await addFavGame(id, type);
+      console.log(response,"res")
       if (response?.data) {
         setGamefav(response?.data?.favouriteGames || []);
         toast.custom((t) => (
@@ -46,7 +48,7 @@ const FavButton: React.FC<FavButtonProps> = ({ favgame, id }) => {
 
   return (
     <button
-      className="absolute right-[-.7vw] top-[-.4vw] z-[9999] portrait:w-[3.5vh] portrait:h-[3.5vh] landscape:w-[3.5vw] landscape:h-[3.5vw]"
+      className="absolute right-[-.7vw] top-[-.4vw] z-[9990] portrait:w-[4vh] portrait:h-[4vh] landscape:w-[4vw] landscape:h-[4vw] lg:landscape:w-[3.5vw] lg:landscape:h-[3.5vw]"
       onClick={(event) => handleClick(event, id, isFav ? "remove" : "add")}
     >
       {gamefav.includes(id) || isFav ? (

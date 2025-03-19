@@ -10,9 +10,10 @@ import GamesGrid from "./GamesGrid";
 import toast from "react-hot-toast";
 import Sidebar from "./Sidebar";
 import Loader from "../ui/Loader";
-import { fetchGames } from "@/src/lib/actions";
-import { Game, Data } from "@/src/lib/types";
-import { useAppSelector } from "@/src/lib/redux/hooks";
+import { Data, Game } from "../../lib/types";
+import { fetchGames } from "../../lib/actions";
+import { useAppSelector } from "../../lib/redux/hooks";
+
 
 interface GamesProps {
   favgame: Game[]; // List of favorite games
