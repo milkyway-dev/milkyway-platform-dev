@@ -10,7 +10,7 @@ const page = async () => {
   const favGames = await fetchGames("fav");
 
   return (
-    <section className="relative w-full flex flex-col justify-center overflow-hidden">
+    <section className="relative w-full overflow-hidden">
       <div className="wave-bg w-full h-full absolute top-0 left-0"></div>
       <Image
         src={"/assets/images/bg.png"}

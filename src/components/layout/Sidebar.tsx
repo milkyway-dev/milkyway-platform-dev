@@ -1813,9 +1813,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                   onSelectCategory(item?.catagory);
                 }}
                 className={`relative cursor-pointer portrait:rounded-[1vh] landscape:rounded-[1vw] 
-         portrait:w-[9vh] landscape:w-[9vw] overflow-hidden
-         ${activeIndex === index && 'scale-[1.2]'}
-        `}
+      portrait:w-[9vh] landscape:w-[9vw] overflow-hidden transition-transform duration-300 ease-in-out 
+      hover:scale-[1.15] hover:brightness-125 ${activeIndex === index ? 'scale-[1.22]' : ''}`}
               >
                 {/* Base Image */}
                 <Image
@@ -1830,7 +1829,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 {/* Overlay Image when Active */}
                 {activeIndex === index && (
                   <Image
-                    src="/assets/images/sidebar-border.png" 
+                    src="/assets/images/sidebar-border.png"
                     alt="Overlay Image"
                     width={1000}
                     height={1000}
@@ -1838,9 +1837,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                     className="absolute top-0 portrait:right-[.4vh] landscape:right-[.4vw] w-full h-full object-cover z-20"
                   />
                 )}
+
+                {/* Shining Effect */}
+                <div className="absolute inset-0 z-30 pointer-events-none shine-effect"></div>
               </button>
             ))}
           </div>
+
         </div>
 
 

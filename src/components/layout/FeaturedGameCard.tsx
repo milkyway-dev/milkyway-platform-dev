@@ -20,9 +20,9 @@ const FeaturedGameCard: React.FC<FeaturedGameCardProps> = ({ src }) => {
           alt={'featured-frame'}
         />
         <Image
-          src={'/assets/images/ladygame.png'}
+          src={src.thumbnail}
           fill
-          className=" w-full  h-full object-contain"
+          className=" w-full  h-full   landscape:rounded-[4vw] landscape:py-[.5vw] portrait:rounded-[4vh] portrait:py-[.5vh] object-cover"
           alt={src.slug}
         />
       </div>

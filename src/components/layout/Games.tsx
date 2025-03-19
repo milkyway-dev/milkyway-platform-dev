@@ -163,6 +163,8 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
     }
   }, []);
 
+  
+
   return (
     <div className="Carousel  relative flex items-center justify-center">
       <Carousel className="sm:w-[100%] w-[95%] m-auto" opts={{ loop: true }}>

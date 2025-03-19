@@ -9,7 +9,6 @@ const Footer = ({ initialGames }: any) => {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const [progress, setProgress] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const totalGames = initialGames?.others?.length || 1;
   const stepCount = Math.ceil(totalGames / 8);
@@ -58,15 +57,6 @@ const Footer = ({ initialGames }: any) => {
   };
 
   useEffect(() => {
-    const checkFullscreen = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", checkFullscreen);
-
-    return () => {
-      document.removeEventListener("fullscreenchange", checkFullscreen);
-    };
-  }, []);
-
-  useEffect(() => {
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("touchmove", handleTouchMove);
@@ -80,7 +70,6 @@ const Footer = ({ initialGames }: any) => {
     };
   }, []);
 
-  if (!isFullscreen) return null;
 
   return (
     <footer className="flex items-center justify-start portrait:pb-[1.5vh] landscape:pb-[1.5vw] select-none">
@@ -98,7 +87,7 @@ const Footer = ({ initialGames }: any) => {
           {/* Draggable Thumb */}
           <div
             className="absolute z-[10] -translate-y-1/2 
-              portrait:w-[2.4vh] portrait:bottom-[-.5vh] landscape:bottom-[-.5vw] lg:landscape:bottom-[-.3vw] 
+              portrait:w-[2.4vh] portrait:bottom-[-.7vh] landscape:bottom-[-.5vw] lg:landscape:bottom-[-.3vw] 
               portrait:h-[2.4vh] landscape:w-[2.4vw] landscape:h-[2.4vw] 
               lg:landscape:w-[2vw] lg:landscape:h-[2vw] 
               border border-white rounded-full cursor-pointer"

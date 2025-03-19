@@ -5,7 +5,7 @@
 @layer base {
   body {
     @apply cursor-custom;
-    background: #0d2907;
+    background: #082a11;
     overflow: hidden;
       font-family: var(--font-macondo);
   }
@@ -37,6 +37,7 @@ button {
   animation: mouse-effect 0.3s forwards ease-out;
   z-index: 1000;
 }
+
 @media screen and(max-width:640px) {
   .click-effect {
   top: -1.5vw;

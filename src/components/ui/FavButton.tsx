@@ -1,7 +1,9 @@
+
 import toast from "react-hot-toast";
 import Notification from "./Notification";
 import { useState, MouseEvent } from "react";
 import { addFavGame } from "@/src/lib/actions";
+import Image from "next/image";
 
 interface FavButtonProps {
   favgame: { _id: string }[]; // Array of favorite games with IDs
@@ -44,41 +46,17 @@ const FavButton: React.FC<FavButtonProps> = ({ favgame, id }) => {
 
   return (
     <button
-      className="absolute right-[-.5vw] top-[-.3vw] z-[9999] w-[20%] h-[20%]"
+      className="absolute right-[-.7vw] top-[-.4vw] z-[9999] portrait:w-[3.5vh] portrait:h-[3.5vh] landscape:w-[3.5vw] landscape:h-[3.5vw]"
       onClick={(event) => handleClick(event, id, isFav ? "remove" : "add")}
     >
       {gamefav.includes(id) || isFav ? (
-       <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-       <g filter="url(#filter0_i_192_1460)">
-       <circle cx="25" cy="25" r="25" fill="#343433"/>
-       </g>
-       <g clipPath="url(#clip0_192_1460)">
-       <path d="M25.5081 18.1395L24.8552 17.4937C23.1605 15.8175 21.4612 15.0561 19.9062 14.9434C18.1535 14.8165 16.5892 15.5156 15.4371 16.6597L15.4371 16.6597C13.1303 18.9502 12.4817 23.0144 15.2631 25.7958C15.2631 25.7958 15.2631 25.7958 15.2631 25.7958L25.508 35.0757H25.5083L35.7532 25.7958L35.7532 25.7958M25.5081 18.1395L35.5653 16.6736M25.5081 18.1395L26.1611 17.4937M25.5081 18.1395L26.1611 17.4937M35.7532 25.7958C35.7529 25.7961 35.7525 25.7965 35.7521 25.7969L35.7532 25.7958ZM35.7532 25.7958L35.7535 25.7955C38.5158 23.0328 37.8674 18.9687 35.5653 16.6736M35.5653 16.6736C34.4154 15.5272 32.8545 14.8246 31.1048 14.9487L31.0391 14.0226M35.5653 16.6736L31.0391 14.0226M26.1611 17.4937C27.8553 15.818 29.5525 15.0588 31.1048 14.9487L31.0391 14.0226M26.1611 17.4937L31.0391 14.0226" fill="#A10B16" stroke="url(#paint0_linear_192_1460)" strokeWidth="1.85714"/>
-       </g>
-       <defs>
-       <filter id="filter0_i_192_1460" x="0" y="0" width="50" height="52.1277" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-       <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-       <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-       <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-       <feOffset dy="2.12766"/>
-       <feGaussianBlur stdDeviation="3.93617"/>
-       <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-       <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-       <feBlend mode="normal" in2="shape" result="effect1_innerShadow_192_1460"/>
-       </filter>
-       <linearGradient id="paint0_linear_192_1460" x1="25.5006" y1="14" x2="25.5006" y2="36.0043" gradientUnits="userSpaceOnUse">
-       <stop stopColor="#FFDB90"/>
-       <stop offset="1" stopColor="#D18C06"/>
-       </linearGradient>
-       <clipPath id="clip0_192_1460">
-       <rect width="26" height="26" fill="white" transform="translate(12.5 12)"/>
-       </clipPath>
-       </defs>
-       </svg>
-       
-
+      <Image
+        src="/assets/images/fav-heart.png"
+        alt="favorite-icon"
+        fill
+        className="object-cover"/>
       ) : (
-        <svg width="66" height="66" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="100%" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g filter="url(#filter0_d_365_530)">
             <g filter="url(#filter1_i_365_530)">
               <circle cx="34" cy="31" r="25" fill="#343433" />

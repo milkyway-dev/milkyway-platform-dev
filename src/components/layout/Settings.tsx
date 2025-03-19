@@ -43,7 +43,7 @@ const Settings = () => {
         <>
             <div className="flex justify-center  portrait:pl-[2vh] landscape:pl-[2vw] items-center portrait:gap-x-[2.5vh] landscape:gap-x-[2.5vw] pt-[.6vw]">
                 {/* Icon 1 */}
-                <button onClick={() => handleModalOpen("SHARE")} className="flex cursor-pointer hover:opacity-50 transition-all flex-col  items-center">
+                <button onClick={() => handleModalOpen("SHARE")} className="flex cursor-pointer hover:scale-110 hover:opacity-70 transition-all flex-col  items-center">
                     <Image src="/assets/images/share.png" alt="Share" width={100} height={100} quality={100} className='portrait:w-[1.7vh] portrait:h-[1.7vh] landscape:w-[1.7vw] landscape:h-[1.7vw]' />
                     <p className=" tracking-wide
 bg-gradient-to-b from-[#FFF4A3] via-[#F8F4A8] to-[#FFFFFF] 
@@ -55,7 +55,7 @@ portrait:text-[.9vh] landscape:text-[.9vw] font-bold">
                 </button>
 
                 {/* Icon 2 */}
-                <button onClick={() => handleModalOpen("ANNOUNCEMENT")} className="flex flex-col cursor-pointer hover:opacity-50 transition-all items-center">
+                <button onClick={() => handleModalOpen("ANNOUNCEMENT")} className="flex flex-col cursor-pointer hover:scale-110 hover:opacity-70 transition-all items-center">
                     <Image src="/assets/images/announcment.png" alt="Announcement" width={100} height={100} quality={100} className='portrait:w-[1.7vh] portrait:h-[1.7vh] landscape:w-[1.7vw] landscape:h-[1.7vw]' />
                     <p className=" tracking-wide
 bg-gradient-to-b from-[#FFF4A3] via-[#F8F4A8] to-[#FFFFFF] 
@@ -64,7 +64,7 @@ portrait:text-[.9vh] landscape:text-[.9vw] font-bold">Announcement</p>
                 </button>
 
                 {/* Icon 3 */}
-                <button onClick={() => handleModalOpen("MODIFY PASSWORD")} className="flex flex-col cursor-pointer hover:opacity-50 transition-all items-center">
+                <button onClick={() => handleModalOpen("MODIFY PASSWORD")} className="flex flex-col cursor-pointer hover:scale-110 hover:opacity-70 transition-all items-center">
                     <Image src="/assets/images/password.png" alt="Password" width={100} height={100} quality={100} className='portrait:w-[1.7vh] portrait:h-[1.7vh] landscape:w-[1.7vw] landscape:h-[1.7vw]' />
                     <p className=" tracking-wide
 bg-gradient-to-b from-[#FFF4A3] via-[#F8F4A8] to-[#FFFFFF] 
@@ -73,7 +73,7 @@ portrait:text-[.9vh] landscape:text-[.9vw] font-bold">Password</p>
                 </button>
 
                 {/* Icon 4 */}
-                <button onClick={() => handleModalOpen("SETTING")} className="flex flex-col cursor-pointer hover:opacity-50 transition-all items-center">
+                <button onClick={() => handleModalOpen("SETTING")} className="flex flex-col cursor-pointer hover:scale-110 hover:opacity-70 transition-all items-center">
                     <Image src="/assets/images/setting.png" alt="setting" width={100} height={100} quality={100} className='portrait:w-[1.7vh] portrait:h-[1.7vh] landscape:w-[1.7vw] landscape:h-[1.7vw]' />
                     <p className=" tracking-wide
 bg-gradient-to-b from-[#FFF4A3] via-[#F8F4A8] to-[#FFFFFF] 

@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import { config } from "./config";
 import { getCookie, getCurrentUser } from "./cookies";
+import { revalidatePath } from "next/cache";
 
 interface ApiResponse {
   data?: {
@@ -67,10 +68,7 @@ export const getGameById = async (id: string) => {
   }
 };
 
-export const addFavGame = async (
-  id: string,
-  type: string
-): Promise<ApiResponse> => {
+export const addFavGame = async (id: string, type: string): Promise<ApiResponse> => {
   const token = await getCookie();
   const user = await getCurrentUser();
 
@@ -94,6 +92,9 @@ export const addFavGame = async (
 
     const data: ApiResponse = await response.json();
 
+    // Trigger revalidation
+    revalidatePath('/');
+
     return data;
   } catch (error: unknown) {
     console.error(error);
@@ -103,7 +104,6 @@ export const addFavGame = async (
       return { message: "An unknown error occurred" };
     }
   }
-
 };
 
 export const updatePassword = async (formData: {
