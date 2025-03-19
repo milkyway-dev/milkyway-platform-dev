@@ -1,21 +1,22 @@
 "use client";
-import { config } from "../config";
-import {
-  resetUser,
-  setCredits,
-} from "../redux/features/userSlice";
-import { useAppDispatch} from "../redux/hooks";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, createContext, useContext } from "react";
-import { io, Socket } from "socket.io-client";
 
+
+import { createContext, useContext, useEffect, useState, useRef } from "react";
+import { io, Socket } from "socket.io-client";
 import toast from "react-hot-toast";
-import Notification from "@/src/components/ui/Notification";
 import Loader from "@/src/components/ui/Loader";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { resetUser, setCredits, updateConnection } from "../redux/features/userSlice";
+import { useRouter } from "next/navigation";
+import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
+import Notification from "@/src/components/ui/Notification";
+import { getAwsAlbCookie } from "@/src/lib/cookies";
+import { config } from "../config";
 
 interface SocketContextType {
   socket: Socket | null;
 }
+
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
 export const useSocket = (): SocketContextType => {
@@ -31,33 +32,62 @@ export const SocketProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ token, children }) => {
   const dispatch = useAppDispatch();
+
+  const connection = useAppSelector((state) => state.user.connected);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [connection,setConnection]=useState(false)
+  const socketInitialized = useRef(false);
+
   const router = useRouter();
 
   useEffect(() => {
-    if (token) {
-      // Use sessionStorage instead of localStorage for unique platformId per tab
+    // Prevent multiple socket initializations
+    if (socketInitialized.current || !token) return;
+
+    const initializeSocket = async () => {
+      const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
+      if (!awsALBCookie || !awsALBTGCORSCookie) {
+        console.error("Missing AWS sticky session cookies");
+        return;
+      }
+
       let platformId = sessionStorage.getItem("platformId");
       if (!platformId) {
-        platformId = crypto.randomUUID(); // Generate a unique platformId
+        platformId = crypto.randomUUID();
         sessionStorage.setItem("platformId", platformId);
       }
 
-      const socketInstance = io(`${config.server}`, {
-        auth: { token, origin: config.platform, platformId },
+      console.log("Initializing socket connection...");
+      socketInitialized.current = true;
+
+      const socketInstance = io(`${config.server}/playground`, {
+        transports: ["websocket"],
+        auth: {
+          token,
+          origin: config.platform,
+          playgroundId: platformId,
+        },
+        extraHeaders: {
+          Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
+        },
       });
+
       setSocket(socketInstance);
 
       socketInstance.on("connect", () => {
-          setConnection(true)
+        console.log("Connected to Socket.IO server with ID:", socketInstance.id);
+        setTimeout(() => {
+          dispatch(updateConnection(true));
+        }, 1000);
       });
 
       socketInstance.on("disconnect", () => {
+        console.log("Disconnected from Socket.IO server");
         dispatch(resetUser());
-        setConnection(false)
+        dispatch(updateConnection(false));
+        socketInitialized.current = false; // Allow reconnection if disconnected
       });
 
+      // ...rest of your event handlers
       socketInstance.on("data", (data: any) => {
         switch (data?.type) {
           case "CREDIT":
@@ -67,8 +97,21 @@ export const SocketProvider: React.FC<{
         }
       });
 
+      socketInstance.on("error", (error: { message: string }) => {
+        console.error("Socket error:", error.message);
+        toast.custom(
+          (t) => (
+            <Notification
+              visible={t.visible}
+              message={error.message || "Connection error occurred"}
+            />
+          ),
+          { duration: 5000 }
+        );
+      });
+
       socketInstance.on("alert", (message: any) => {
-        if (message == "ForcedExit") {
+        if (message === "ForcedExit") {
           dispatch(resetUser());
           router.push("/logout");
         } else if (message === "NewTab") {
@@ -79,16 +122,22 @@ export const SocketProvider: React.FC<{
                 message="You are already active in another tab."
               />
             ),
-            { duration: Infinity } // Keep the notification open indefinitely
+            { duration: Infinity }
           );
         }
       });
+    };
 
-      return () => {
-        socketInstance.disconnect();
-      };
-    }
-  }, [token]);
+    initializeSocket();
+
+    return () => {
+      if (socket) {
+        console.log("Cleaning up socket connection");
+        socket.disconnect();
+        socketInitialized.current = false;
+      }
+    };
+  }, [token, dispatch, router]);
 
   return (
     <SocketContext.Provider value={{ socket }}>

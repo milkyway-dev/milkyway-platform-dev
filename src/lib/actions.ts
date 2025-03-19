@@ -1,8 +1,8 @@
 "use server";
 import { redirect } from "next/navigation";
 import { config } from "./config";
-import { getCookie, getCurrentUser } from "./cookies";
 import { revalidatePath } from "next/cache";
+import { getCookie, getCurrentUser, getAwsAlbCookie } from "./cookies";
 
 interface ApiResponse {
   data?: {
@@ -20,19 +20,33 @@ interface JwtPayload {
 function isJwtPayload(obj: any): obj is JwtPayload {
   return typeof obj === "object" && "username" && "id" in obj;
 }
-
-export async function fetchGames(category: string = "all") {
+export const getAuthHeaders = async () => {
   const token = await getCookie();
+  const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
+
+  const cookies = [
+    `userToken=${token}`,
+    awsALBCookie ? `AWSALBTG=${awsALBCookie}` : "",
+    awsALBTGCORSCookie ? `AWSALBTGCORS=${awsALBTGCORSCookie}` : "",
+  ]
+    .filter(Boolean)
+    .join("; ");
+
+  return {
+    "Content-Type": "application/json",
+    Cookie: cookies,
+  };
+};
+export async function fetchGames(category: string = "all") {
+  const headers = await getAuthHeaders();
+
   try {
     const res = await fetch(
       `${config.server}/api/games?platform=${config.platform}&category=${category}`,
       {
         method: "GET",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `userToken=${token}`,
-        },
+        headers: headers,
       },
 
     );
@@ -49,18 +63,17 @@ export async function fetchGames(category: string = "all") {
 }
 
 export const getGameById = async (id: string) => {
-  const token = await getCookie();
+  const headers = await getAuthHeaders();
 
   try {
     const response = await fetch(`${config.server}/api/games/${id}`, {
       method: "GET",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
+      headers: headers,
+      cache: "no-cache",
     });
     const data = await response.json();
+    console.log("Game data", data);
     return data;
   } catch (error: unknown) {
     console.error(error);
@@ -77,16 +90,14 @@ export const addFavGame = async (id: string, type: string): Promise<ApiResponse>
   }
 
   try {
+    const headers = await getAuthHeaders();
+
     const response = await fetch(
       `${config.server}/api/games/favourite/${user.id}`,
       {
         method: "PUT",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `userToken=${token}`,
-        },
-        body: JSON.stringify({ gameId: id, type: type }),
+        headers: headers,
       }
     );
 
@@ -110,7 +121,7 @@ export const updatePassword = async (formData: {
   existingPassword: string;
   password: string;
 }): Promise<ApiResponse> => {
-  const token = await getCookie();
+  const headers = await getAuthHeaders();
   const user = await getCurrentUser();
 
   // Check if user is of type JwtPayload
@@ -122,10 +133,8 @@ export const updatePassword = async (formData: {
     const response = await fetch(`${config.server}/api/users/${user?.id}`, {
       method: "PUT",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
+      headers: headers,
+
       body: JSON.stringify({
         existingPassword: formData.existingPassword,
         password: formData.password,

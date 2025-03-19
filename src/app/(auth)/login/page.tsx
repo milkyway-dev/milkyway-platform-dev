@@ -5,7 +5,6 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
-
 import { config } from "@/src/lib/config";
 import CustomButton from "@/src/components/ui/CustomButton";
 import Notification from "@/src/components/ui/Notification";
@@ -72,13 +71,13 @@ const Login = () => {
           message="Loggin In..."
         />
       ));
-      const response = await fetch(`${config.server}/api/users/login`, {
+      const response = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
-        credentials: "include", // Include credentials in the request
+        credentials: "include", 
       });
 
       const data = await response.json();

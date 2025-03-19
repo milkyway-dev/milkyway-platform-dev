@@ -5,7 +5,10 @@ import Header from "@/src/components/layout/Header";
 import Footer from "@/src/components/layout/Footer";
 import { fetchGames } from "@/src/lib/actions";
 
-const page = async () => {
+export const fetchCache = 'force-no-store';
+
+const Home = async () => {
+
   const initialGames = await fetchGames();
   const favGames = await fetchGames("fav");
 

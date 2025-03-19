@@ -80,6 +80,8 @@ const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
   }, [loadingpercent, gameLoaded]);
 
   useEffect(() => {
+
+   
     if (data && getToken("token")) {
       const handleMessage = (event: MessageEvent) => {
         const message = event.data;
@@ -93,9 +95,12 @@ const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
               {
                 type: "authToken",
                 cookie: getToken("token"),
+                AWSALBTG: getToken('AWSALBTG'),
+                AWSALBTGCORS: getToken('AWSALBTGCORS'),
                 socketURL: config.server,
                 console: config.nodeEnv === "production" ? false : true,
                 loaderUrl: config.loaderUrl,
+                nameSpace: config.namespace,
               },
               `${data?.url}`
             );
