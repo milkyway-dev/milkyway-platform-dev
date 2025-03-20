@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useRef, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -8,12 +7,13 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 import GamesGrid from "./GamesGrid";
-
 import toast from "react-hot-toast";
 import Sidebar from "./Sidebar";
 import Loader from "../ui/Loader";
-import { fetchGames } from "@/src/lib/actions";
-import { Game, Data } from "@/src/lib/types";
+import { Data, Game } from "../../lib/types";
+import { fetchGames } from "../../lib/actions";
+import { useAppSelector } from "../../lib/redux/hooks";
+
 
 interface GamesProps {
   favgame: Game[]; // List of favorite games
@@ -33,6 +33,20 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
   const [gamesData, setGamesData] = useState<Data>(
     transformGames(initialGames)
   );
+
+  const move = useAppSelector((state) => state.user.moveX);
+  const prevMove = useRef<number>(move); 
+
+  useEffect(() => {
+    if (move !== prevMove.current) {
+      if (move > prevMove.current) {
+        document.querySelector<HTMLButtonElement>(".CarouselNext")?.click();
+      } else {
+        document.querySelector<HTMLButtonElement>(".CarouselPrevious")?.click();
+      }
+      prevMove.current = move; 
+    }
+  }, [move]);
 
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [loading, setLoading] = useState<boolean>(false);
@@ -150,16 +164,12 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
     }
   }, []);
 
+  
+
   return (
-    <div className="Carousel relative">
-      {!gamesData?.isUnderMaintenance && (
-        <Sidebar
-          onSelectCategory={handleFetchGames}
-          selectedCategory={selectedCategory}
-        />
-      )}
+    <div className="Carousel  relative flex items-center justify-center">
       <Carousel className="sm:w-[100%] w-[95%] m-auto" opts={{ loop: true }}>
-        <CarouselContent className="min-h-[66.5vw] sm:min-h-[37vw]">
+        <CarouselContent className="min-h-[67.5vw] sm:min-h-[38vw]">
           <GamesGrid
             favgame={favgame}
             data={gamesData}
@@ -170,6 +180,12 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
         <CarouselPrevious className="CarouselPrevious w-[5%]" />
         <CarouselNext className="CarouselNext w-[5%]" />
       </Carousel>
+      {!gamesData?.isUnderMaintenance && (
+        <Sidebar
+          onSelectCategory={handleFetchGames}
+          selectedCategory={selectedCategory}
+        />
+      )}
       {open && (
         <div
           className={` w-[100vh] h-[100vw] sm:h-screen sm:w-screen z-[99] bg-black bg-opacity-50 flex items-center justify-center fixed top-0 left-0`}
@@ -260,7 +276,7 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
         </div>
       )}
       {loading ? (
-        <div className="fixed top-0 left-0 h-full w-full bg-[#0000003b]">
+        <div className="fixed z-[9999] top-0 left-0 h-full w-full bg-[#0000003b]">
           <Loader />
         </div>
       ) : (

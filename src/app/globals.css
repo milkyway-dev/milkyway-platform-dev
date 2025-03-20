@@ -5,9 +5,9 @@
 @layer base {
   body {
     @apply cursor-custom;
-    background: #0f172a;
+    background: #082a11;
     overflow: hidden;
-    font-family: "Barlow Condensed", sans-serif;
+      font-family: var(--font-macondo);
   }
 }
 .star {
@@ -20,9 +20,7 @@
   z-index: 100;
 }
 
-::selection {
-  color: transparent;
-}
+
 button {
   cursor: inherit;
 }
@@ -39,6 +37,7 @@ button {
   animation: mouse-effect 0.3s forwards ease-out;
   z-index: 1000;
 }
+
 @media screen and(max-width:640px) {
   .click-effect {
   top: -1.5vw;
@@ -360,9 +359,11 @@ input:focus::placeholder {
   }
 } */
 
-:root {
-  font-family: Barlow Condensed, sans-serif;
+.macando {
+  --font-macondo: "Macondo Swash Caps", cursive;
 }
+
+
 
 /* .wave-bg {
   --stripes: repeating-linear-gradient(

@@ -1,12 +1,11 @@
 "use client";
-
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import toast from "react-hot-toast";
+import Loader from "@/src/components/ui/Loader";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { resetUser, setCredits, updateConnection } from "../redux/features/userSlice";
 import { useRouter } from "next/navigation";
-import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
 import Notification from "@/src/components/ui/Notification";
 import { getAwsAlbCookie } from "@/src/lib/cookies";
 import { config } from "../config";
@@ -31,9 +30,11 @@ export const SocketProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ token, children }) => {
   const dispatch = useAppDispatch();
+
   const connection = useAppSelector((state) => state.user.connected);
   const [socket, setSocket] = useState<Socket | null>(null);
   const socketInitialized = useRef(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -41,11 +42,12 @@ export const SocketProvider: React.FC<{
     if (socketInitialized.current || !token) return;
 
     const initializeSocket = async () => {
-      // const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
-      // if (!awsALBCookie || !awsALBTGCORSCookie) {
-      //   console.error("Missing AWS sticky session cookies");
-      //   return;
-      // }
+    
+      const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
+if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) {
+        console.error("Missing AWS sticky session cookies");
+        return;
+      }
 
       let platformId = sessionStorage.getItem("platformId");
       if (!platformId) {
@@ -63,10 +65,11 @@ export const SocketProvider: React.FC<{
           origin: config.platform,
           playgroundId: platformId,
         },
-        // extraHeaders: {
-        //   Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
-        // },
-      });
+
+        extraHeaders: {
+          Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
+        },
+      })
 
       setSocket(socketInstance);
 
@@ -143,7 +146,7 @@ export const SocketProvider: React.FC<{
 
   return (
     <SocketContext.Provider value={{ socket }}>
-      {!connection ? <FullScreenLoader /> : children}
+      {connection?children:<Loader/>}
     </SocketContext.Provider>
   );
 };

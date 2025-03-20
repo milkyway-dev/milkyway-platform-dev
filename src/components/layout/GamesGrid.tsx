@@ -6,7 +6,7 @@ import GameCard from "./GameCard";
 import Autoplay from "embla-carousel-autoplay";
 import Modal from "../ui/Modal";
 import Maintenance from "../ui/Maintenance";
-import { Data, Game } from "@/src/lib/types";
+import { Data, Game } from "../../lib/types";
 
 interface GamesGridProps {
   favgame: { _id: string }[];
@@ -62,12 +62,11 @@ const GamesGrid: React.FC<GamesGridProps> = ({
 
   return (
     <>
-      <CarouselItem className="flex justify-center m-auto w-[80%]">
+      <CarouselItem className="flex justify-center gap-x-[3vw] m-auto">
         {featured?.length > 0 && category === "all" && (
-          <div className="w-[20%] h-auto py-[3%]">
-            <div className="w-[90%] h-full rounded-[0.95vw] p-[0.2vw] bg-gradient-to-b from-[#B18423] via-[#F7E10D] to-[#ECDB3F] shadow-lg ">
-              <div className="bg-[#DC6E0E] rounded-[0.9vw] w-full h-full p-[0.4vw]">
-                <div className="bg-gradient-to-b p-[0.8vw] rounded-[0.95vw] from-[#EFC54C] shadow-lg via-[#F98F08] to-[#943E00] w-full h-full">
+          <div className="w-[23%]  h-auto py-[3%]">
+            <div className="w-[95%] h-full">
+              <div className="rounded-[0.9vw] w-full h-full">
                   <Carousel
                     plugins={[
                       Autoplay({
@@ -75,7 +74,7 @@ const GamesGrid: React.FC<GamesGridProps> = ({
                         stopOnInteraction: false,
                       }),
                     ]}
-                    className="h-full rounded-[1vw] overflow-hidden"
+                    className="h-full rounded-[1vw] "
                     onSlideChange={handleSlideChange}
                   >
                     <CarouselContent className="h-full rounded-[1vw]">
@@ -87,23 +86,23 @@ const GamesGrid: React.FC<GamesGridProps> = ({
                     </CarouselContent>
                   </Carousel>
                 </div>
-              </div>
             </div>
           </div>
         )}
         {category === "all" ? (
-          <div className="grid grid-cols-3 gap-[2vw] sm:min-h-[36vw] min-h-[66.5vw]  w-[65%] py-[3%]">
+          <div className="grid grid-cols-3 portrait:gap-y-[2vw] portrait:gap-x-[3vw] lg:landscape:gap-y-[3vh] landscape:gap-y-[2vh] landscape:gap-x-[4vh] lg:landscape:gap-x-[6vh] sm:min-h-[30vw] min-h-[66.5vw]  w-[58%] py-[3%]">
             {mergedArray?.slice(0, 6).map((game, index) => (
               <GameCard
                 favgame={favgame}
                 key={index}
                 src={game}
                 type={game.type}
+                index={index+1} 
               />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-4 gap-[2vw] w-[85%] sm:min-h-[36vw] min-h-[66.5vw] py-[3%]">
+          <div className="grid grid-cols-4  portrait:gap-y-[3vw] portrait:gap-x-[5vw] landscape:gap-y-[3vh] landscape:gap-x-[6vh] w-[77%] sm:min-h-[36vw] min-h-[66.5vw] py-[3%]">
             {mergedArray?.slice(0, 8).map((game, index) => (
               <GameCard
                 favgame={favgame}
@@ -117,7 +116,7 @@ const GamesGrid: React.FC<GamesGridProps> = ({
       </CarouselItem>
       {remainingChunks?.map((chunk, chunkIndex) => (
         <CarouselItem key={chunkIndex}>
-          <div className="grid grid-cols-4 gap-[2vw] w-[85%] py-[3%] m-auto">
+          <div className="grid grid-cols-4  portrait:gap-y-[3vw] portrait:gap-x-[5vw] landscape:gap-y-[3vh] landscape:gap-x-[6vh] w-[78%] py-[3%] m-auto">
             {chunk?.map((game, index) => (
               <GameCard
                 favgame={favgame}

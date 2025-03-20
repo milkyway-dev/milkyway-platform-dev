@@ -6,15 +6,13 @@ export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
 interface PageProps {
-  params: {
-    gameId: string;
-  };
+  params: Promise<{ gameId: string }>; // Ensure it's properly awaited
 }
 
 const Page: React.FC<PageProps> = async ({ params }) => {
-  const { gameId } = params;
+  const resolvedParams = await params; // Ensure params is awaited
+  const { gameId } = resolvedParams;
   const src = await getGameById(gameId);
-  console.log("Game data PAGE", src);
 
   return <GameFrame data={src} />;
 };
