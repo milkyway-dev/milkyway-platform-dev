@@ -14,13 +14,12 @@ const Macondo_font = Macondo({
 
 
 export const metadata = {
-  title: "power panda",
+  title: "Power Panda",
   description: "Gaming platform",
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+  children}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
