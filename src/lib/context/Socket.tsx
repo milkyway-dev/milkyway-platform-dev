@@ -10,6 +10,7 @@ import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
 import Notification from "@/src/components/ui/Notification";
 import { getAwsAlbCookie } from "@/src/lib/cookies";
 import { config } from "../config";
+import { Events } from "../utils";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -83,11 +84,15 @@ export const SocketProvider: React.FC<{
         socketInitialized.current = false; // Allow reconnection if disconnected
       });
 
-      // ...rest of your event handlers
       socketInstance.on("data", (data: any) => {
         switch (data?.type) {
-          case "CREDIT":
-            dispatch(setCredits(data?.data?.credits));
+          case Events.PLAYGROUND_CREDITS:
+            dispatch(setCredits(data?.payload?.credits));
+            break;
+
+          case Events.PLAYGROUND_EXIT:
+            dispatch(resetUser());
+            router.push("/logout");
             break;
           default:
         }
@@ -107,10 +112,7 @@ export const SocketProvider: React.FC<{
       });
 
       socketInstance.on("alert", (message: any) => {
-        if (message === "ForcedExit") {
-          dispatch(resetUser());
-          router.push("/logout");
-        } else if (message === "NewTab") {
+        if (message === "NewTab") {
           toast.custom(
             (t) => (
               <Notification
@@ -122,6 +124,10 @@ export const SocketProvider: React.FC<{
           );
         }
       });
+
+      socketInstance.on("ping", () => {
+        socketInstance.emit("pong")
+      })
     };
 
     initializeSocket();
