@@ -57,12 +57,12 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) 
       console.log("Initializing socket connection...");
       socketInitialized.current = true;
 
-      const socketInstance = io(`${config.server}/playground`, {
+      const socketInstance = io(`${config.server}`, {
         transports: ["websocket"],
         auth: {
           token,
           origin: config.platform,
-          playgroundId: platformId,
+          // playgroundId: platformId,
         },
 
         extraHeaders: {
