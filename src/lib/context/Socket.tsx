@@ -42,12 +42,12 @@ export const SocketProvider: React.FC<{
     if (socketInitialized.current || !token) return;
 
     const initializeSocket = async () => {
-    
-      const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
-if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) {
-        console.error("Missing AWS sticky session cookies");
-        return;
-      }
+
+      // const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
+      // if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) {
+      //   console.error("Missing AWS sticky session cookies");
+      //   return;
+      // }
 
       let platformId = sessionStorage.getItem("platformId");
       if (!platformId) {
@@ -66,9 +66,7 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) 
           playgroundId: platformId,
         },
 
-        extraHeaders: {
-          Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
-        },
+
       })
 
       setSocket(socketInstance);
@@ -146,7 +144,7 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) 
 
   return (
     <SocketContext.Provider value={{ socket }}>
-      {connection?children:<Loader/>}
+      {connection ? children : <Loader />}
     </SocketContext.Provider>
   );
 };
