@@ -155,4 +155,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-This README provides a comprehensive overview of the El Dorado Spin Project, its structure, and how to get started with development. For detailed information about each component, please refer to the source files and comments within the code.
+This README provides a comprehensive overview of the El Dorado Spin Project, its structure, and how to get started with development. For detailed information about each component, please refer to the source files and comments within the code
