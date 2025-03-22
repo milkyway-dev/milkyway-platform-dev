@@ -146,7 +146,7 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) 
 
   return (
     <SocketContext.Provider value={{ socket }}>
-      {connection?children:<Loader/>}
+      {connection?children:children}
     </SocketContext.Provider>
   );
 };

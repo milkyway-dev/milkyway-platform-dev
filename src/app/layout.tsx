@@ -45,7 +45,7 @@ export default function RootLayout({
               />
               <AudioPlayer />
               <div id="modal"></div>
-            </VolumeProvider>
+              </VolumeProvider>
           </div>
         </div>
       </body>
