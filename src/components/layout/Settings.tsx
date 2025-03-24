@@ -1,18 +1,32 @@
 'use client'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import Setting from './Setting';
 import Password from './Password';
 import Annoucement from './Annoucement';
 import Share from './Share';
 import Modal from '../ui/Modal';
+import PasswordMusic from './PasswordMusic';
 
 const Settings = () => {
     const [open, setOpen] = useState(false);
     const [modalType, setModalType] = useState("");
-
+    const [typeImage, setTypeImage] = useState("");
 
     const handleModalOpen = (type: string) => {
+        switch (type) {
+            case "SETTING":
+                setTypeImage('/assets/popup/Setting.png');
+                break;
+
+            case "ANNOUNCEMENT":
+                setTypeImage('/assets/popup/announcementtext.png');
+                break;
+            case "SHARE":
+                setTypeImage('/assets/popup/share.png');
+                break;
+            default:
+                setTypeImage("");
+        }
         setModalType(type);
         setOpen(true);
     };
@@ -21,11 +35,8 @@ const Settings = () => {
     let ModalContent;
     switch (modalType) {
         case "SETTING":
-            ModalContent = <Setting />;
+            ModalContent = <PasswordMusic />;
 
-            break;
-        case "MODIFY PASSWORD":
-            ModalContent = <Password />;
             break;
 
         case "ANNOUNCEMENT":
@@ -34,6 +45,7 @@ const Settings = () => {
 
         case "SHARE":
             ModalContent = <Share />;
+
             break;
         default:
             ModalContent = null; // No modal content by default
@@ -63,15 +75,6 @@ bg-clip-text text-transparent
 portrait:text-[.9vh] landscape:text-[.9vw] font-bold">Announcement</p>
                 </button>
 
-                {/* Icon 3 */}
-                <button onClick={() => handleModalOpen("MODIFY PASSWORD")} className="flex flex-col cursor-pointer hover:scale-110 hover:opacity-70 transition-all items-center">
-                    <Image src="/assets/images/password.png" alt="Password" width={100} height={100} quality={100} className='portrait:w-[1.7vh] portrait:h-[1.7vh] landscape:w-[1.7vw] landscape:h-[1.7vw]' />
-                    <p className=" tracking-wide
-bg-gradient-to-b from-[#FFF4A3] via-[#F8F4A8] to-[#FFFFFF] 
-bg-clip-text text-transparent 
-portrait:text-[.9vh] landscape:text-[.9vw] font-bold">Password</p>
-                </button>
-
                 {/* Icon 4 */}
                 <button onClick={() => handleModalOpen("SETTING")} className="flex flex-col cursor-pointer hover:scale-110 hover:opacity-70 transition-all items-center">
                     <Image src="/assets/images/setting.png" alt="setting" width={100} height={100} quality={100} className='portrait:w-[1.7vh] portrait:h-[1.7vh] landscape:w-[1.7vw] landscape:h-[1.7vw]' />
@@ -86,6 +89,7 @@ portrait:text-[.9vh] landscape:text-[.9vw] font-bold">Setting</p>
                 setOpen={setOpen}
                 modalType={modalType}
                 setModalType={setModalType}
+                renderImage={typeImage}
             >
                 {ModalContent}
             </Modal>

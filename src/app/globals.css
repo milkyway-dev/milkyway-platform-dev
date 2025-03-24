@@ -29,12 +29,12 @@ button {
   position: fixed;
   top: -0.5vw;
   left: -0.5vw;
-  height: 1vw;
-  width: 1vw;
+  height: 1.5vw;
+  width: 1.5vw;
   border-radius: 50%;
-  border: 0.001vw solid #ffffff40;
+  border: 1vw solid #ffffff40;
   pointer-events: none;
-  animation: mouse-effect 0.3s forwards ease-out;
+  animation: mouse-effect 0.5s forwards ease-out;
   z-index: 1000;
 }
 
@@ -42,8 +42,8 @@ button {
   .click-effect {
   top: -1.5vw;
   left: -1.5vw;
-  height: 3vw;
-  width: 3vw;
+  height: 5vw;
+  width: 5vw;
 }
 }
 
@@ -137,6 +137,7 @@ input:focus::placeholder {
 }
 .progress {
   background: transparent;
+
 }
 .progress::-webkit-progress-bar {
   background: transparent;
@@ -144,31 +145,21 @@ input:focus::placeholder {
 .progress::-webkit-progress-value {
   background: linear-gradient(
       180deg,
-      #25bbfd 0%,
-      rgba(34, 227, 252, 0.75) 28%,
+      #EE910E,
+      #FD5400,
       rgba(50, 169, 250, 0.07) 72%,
-      #3ff6ff 100%
+      #EE910E 100%
     ),
-    #31a1fa;
+    #EE910E;
   border-radius: 2vw;
 }
+
 
 .progress::-moz-progress-value {
   background: transparent;
 }
 
-.progress::-moz-progress-bar {
-  background: transparent;
-  background: linear-gradient(
-      180deg,
-      #25bbfd 0%,
-      rgba(34, 227, 252, 0.75) 28%,
-      rgba(50, 169, 250, 0.07) 72%,
-      #3ff6ff 100%
-    ),
-    #31a1fa;
-  border-radius: 2vw;
-}
+
 
 .spin-loader {
   svg {
@@ -217,13 +208,12 @@ input:focus::placeholder {
   width: 100%;
   height: 100%;
   border-radius: 2vw;
-  background: linear-gradient(180deg, #6e33c3 0%, #4417ac 100%);
+  background: #201212;
   position: relative;
-  border: solid 0.2vw #25bbfd;
-  z-index: 1;
+  border: solid 0.2vw  #C0650C;
 }
 #music::-webkit-slider-thumb {
-  background: url("/music.svg") no-repeat center center;
+  background: url("/music.png") no-repeat center center;
   -webkit-appearance: none;
   appearance: none;
   width: 4vw;
@@ -232,9 +222,10 @@ input:focus::placeholder {
   cursor: pointer;
   border: none;
   position: relative;
+  z-index: 999;
 }
 #music::-moz-range-thumb {
-  background: url("/music.svg") no-repeat center center;
+  background: url("/music.png") no-repeat center center;
   -webkit-appearance: none;
   appearance: none;
   width: 4vw;
@@ -243,30 +234,9 @@ input:focus::placeholder {
   cursor: pointer;
   border: none;
   position: relative;
+  z-index: 999;
 }
 
-#sound::-webkit-slider-thumb {
-  background: url("/sound.svg") no-repeat center center;
-  -webkit-appearance: none;
-  appearance: none;
-  width: 4vw;
-  height: 4vw;
-  background-size: contain;
-  cursor: pointer;
-  border: none;
-  position: relative;
-}
-#sound::-moz-range-thumb {
-  background: url("/sound.svg") no-repeat center center;
-  -webkit-appearance: none;
-  appearance: none;
-  width: 4vw;
-  height: 4vw;
-  background-size: contain;
-  cursor: pointer;
-  border: none;
-  position: relative;
-}
 
 #gameLoader::-webkit-slider-thumb {
   background: url("/favicon.png") no-repeat center center;

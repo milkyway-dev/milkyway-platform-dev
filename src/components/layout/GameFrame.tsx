@@ -85,12 +85,14 @@ const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
     if (data && getToken("token")) {
       const handleMessage = (event: MessageEvent) => {
         const message = event.data;
-
+        console.log('message here',event);
         const iframe = document.getElementById(
           "gameIframe"
         ) as HTMLIFrameElement;
         if (message === "authToken") {
+          console.log('second step')
           if (iframe.contentWindow) {
+          console.log('3rd step')
             iframe.contentWindow.postMessage(
               {
                 type: "authToken",
@@ -102,7 +104,7 @@ const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
                 loaderUrl: config.loaderUrl,
                 // nameSpace: config.namespace,
               },
-              `${data?.url}`
+              `https://slot-zombieland-dev.vercel.app/`
             );
           }
         }
@@ -137,7 +139,7 @@ const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
       )}
       <iframe
         key={iframeKey}
-        src={data.url}
+        src={'https://slot-zombieland-dev.vercel.app/'}
         width="100%"
         height="100%"
         className={`rounded-lg transition-opacity duration-300`}

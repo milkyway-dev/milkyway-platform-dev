@@ -2,7 +2,12 @@
 import { useEffect } from "react";
 
 export default function MouseClickEffect() {
-  function handleClick(event: any) {
+  function handleClick(event: MouseEvent) {
+    // Play sound
+    const audio = new Audio("/audio/click.mp3");
+    audio.play();
+
+    // Create click effect
     const effect = document.createElement("div");
     effect.classList.add("click-effect");
     effect.style.left = `${event.clientX}px`;

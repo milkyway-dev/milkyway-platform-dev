@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import Notification from "@/src/components/ui/Notification";
 import { getAwsAlbCookie } from "@/src/lib/cookies";
 import { config } from "../config";
+import { Events } from "../utils";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -86,11 +87,15 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) 
         socketInitialized.current = false; // Allow reconnection if disconnected
       });
 
-      // ...rest of your event handlers
       socketInstance.on("data", (data: any) => {
         switch (data?.type) {
-          case "CREDIT":
-            dispatch(setCredits(data?.data?.credits));
+          case Events.PLAYGROUND_CREDITS:
+            dispatch(setCredits(data?.payload?.credits));
+            break;
+
+          case Events.PLAYGROUND_EXIT:
+            dispatch(resetUser());
+            router.push("/logout");
             break;
           default:
         }
@@ -110,10 +115,7 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) 
       });
 
       socketInstance.on("alert", (message: any) => {
-        if (message === "ForcedExit") {
-          dispatch(resetUser());
-          router.push("/logout");
-        } else if (message === "NewTab") {
+        if (message === "NewTab") {
           toast.custom(
             (t) => (
               <Notification
@@ -125,6 +127,10 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) 
           );
         }
       });
+
+      socketInstance.on("ping", () => {
+        socketInstance.emit("pong")
+      })
     };
 
     initializeSocket();
@@ -140,7 +146,7 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) 
 
   return (
     <SocketContext.Provider value={{ socket }}>
-      {connection?children:<Loader/>}
+      {connection?children:children}
     </SocketContext.Provider>
   );
 };
