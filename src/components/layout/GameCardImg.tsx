@@ -22,11 +22,11 @@ const GameCardImg: React.FC<GameCardImgProps> = ({ src, type }) => {
         
           
           {/* Game Image inside the Frame */}
-          <div className="absolute  top-0 left-0 w-full h-full flex items-center justify-center p-[5%]">
+          <div className="absolute  top-0 left-0 w-full h-full flex items-center justify-center">
             <Image
               src={src}
               fill
-              className="rounded-[3vw] portrait:py-[.2vh] landscape:py-[.2vw] object-cover"
+              className=" object-fit"
               alt="game-img"
             />
              
