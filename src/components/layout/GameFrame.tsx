@@ -95,8 +95,8 @@ const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
               {
                 type: "authToken",
                 cookie: getToken("token"),
-                AWSALBTG: getToken('AWSALBTG'),
-                AWSALBTGCORS: getToken('AWSALBTGCORS'),
+                AWSALB: getToken('AWSALB'),
+                AWSALBCORS: getToken('AWSALBCORS'),
                 socketURL: config.server,
                 console: config.nodeEnv === "production" ? false : true,
                 loaderUrl: config.loaderUrl,

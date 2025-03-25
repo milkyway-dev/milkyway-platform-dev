@@ -42,8 +42,8 @@ export const SocketProvider: React.FC<{
 
     const initializeSocket = async () => {
     
-      const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
-if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) {
+      const { awsALBCookie, AWSALBCORSCookie } = await getAwsAlbCookie();
+if (config.nodeEnv !== "development" && (!awsALBCookie || !AWSALBCORSCookie)) {
         console.error("Missing AWS sticky session cookies");
         return;
       }
@@ -66,7 +66,7 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) 
         },
 
         extraHeaders: {
-          Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
+          Cookie: `AWSALB=${awsALBCookie}; AWSALBCORS=${AWSALBCORSCookie}`,
         },
       })
 
