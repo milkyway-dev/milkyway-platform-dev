@@ -19,10 +19,21 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [randomCharacter, setRandomCharacter] = useState<number | null>(1);
+  const [randomCharacter, setRandomCharacter] = useState<number | null>(4);
 
+  const getWeightedRandomNumber = () => {
+    const numbers = [1, 2, 3, 4];
+    const weights = [1, 1, 1, 7]; 
+  
+    const weightedNumbers = numbers.flatMap((num, index) =>
+      Array(weights[index]).fill(num)
+    );
+  
+    return weightedNumbers[Math.floor(Math.random() * weightedNumbers.length)];
+  };
+  
   useEffect(() => {
-    const randomNumber = Math.floor(Math.random() * 4) + 1;
+    const randomNumber = getWeightedRandomNumber();
     setRandomCharacter(randomNumber);
   }, []);
 
