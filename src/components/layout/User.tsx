@@ -36,7 +36,7 @@ const User = ({ data }: any) => {
         className="bg-no-repeat  portrait:w-[35vh] landscape:w-[35vw] h-full flex items-start justify-between landscape:px-[1vw] portrait:px-[1vh]"
       >
         {/* Profile Section */}
-        <div className="flex items-start z-[3] landscape:gap-x-[1vw] portrait:gap-x-[1vh]">
+        <div className="flex items-start z-[3] landscape:gap-x-[.7vw] portrait:gap-x-[.7vh]">
           <Image
             src={`/avatar/avatar${avatar}.png`}
             alt='profile_picture'
@@ -45,7 +45,7 @@ const User = ({ data }: any) => {
             quality={100}
             className="landscape:w-[6vw] border-2 rounded-full p-1 landscape:h-[6vw] portrait:w-[6vh] portrait:h-[6vh] object-cover"
           />
-          <span className="font-semibold text-white portrait:pt-[1.2vh] landscape:pt-[1.2vw] landscape:text-[1.4vw] portrait:text-[1.4vh] tracking-wider uppercase">
+          <span className="font-semibold text-white portrait:pt-[1.4vh] landscape:pt-[1.4vw] landscape:text-[1.1vw] portrait:text-[1.1vh] tracking-wider uppercase">
           {data?.username}
           </span>
         </div>

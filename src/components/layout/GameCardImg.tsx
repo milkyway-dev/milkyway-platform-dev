@@ -16,17 +16,16 @@ const GameCardImg: React.FC<GameCardImgProps> = ({ src, type }) => {
   });
 
   return (
-    <div className="relative w-full h-full" ref={ref}>
+    <div className="relative w-full  h-full" ref={ref}>
       {isIntersecting && (
         <>
         
-          
           {/* Game Image inside the Frame */}
-          <div className="absolute  top-0 left-0 w-full h-full flex items-center justify-center">
+          <div className="absolute  top-0 left-0 w-full h-full  flex items-center justify-center">
             <Image
               src={src}
               fill
-              className=" object-fit"
+              className=" landscape:py-[.2vw] landscape:rounded-[4vw] portrait:py-[.2vh] portrait:rounded-[4vh] object-fit"
               alt="game-img"
             />
              
