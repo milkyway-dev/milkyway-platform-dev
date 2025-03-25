@@ -25,7 +25,7 @@ const GameCardImg: React.FC<GameCardImgProps> = ({ src, type }) => {
             <Image
               src={src}
               fill
-              className=" landscape:py-[.2vw] landscape:rounded-[4vw] portrait:py-[.2vh] portrait:rounded-[4vh] object-fit"
+              className=" landscape:py-[.7vw] landscape:rounded-[3vw] portrait:px-[.6vh] landscape:px-[.6vw] portrait:py-[.7vh] portrait:rounded-[3vh] object-fit"
               alt="game-img"
             />
              

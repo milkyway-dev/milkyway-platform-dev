@@ -31,12 +31,10 @@ const PasswordMusic = () => {
     let ModalContent;
     switch (option) {
         case "Sound":
-            ModalContent = <Sound />;
-
+            ModalContent = <Sound />
             break;
-
         case "Password":
-            ModalContent = <div className="landscape:text-[1.2vw] portrait:text-[1.2vh]">Please contact your agent to change your password.</div>;
+            ModalContent = <div className="landscape:text-[1.2vw] custom-font portrait:text-[1.2vh]">Please contact your agent to change your password.</div>;
             break;
         default:
             ModalContent = null;
