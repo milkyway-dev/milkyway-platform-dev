@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+@font-face {
+  font-family: 'gong';
+  src: url('/fonts/gong.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.custom-font {
+  font-family: 'gong', sans-serif;
+}
+
+
 @layer base {
   body {
     @apply cursor-custom;
