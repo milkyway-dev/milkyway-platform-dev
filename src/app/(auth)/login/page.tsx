@@ -19,7 +19,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [randomCharacter, setRandomCharacter] = useState<number | null>(null);
+  const [randomCharacter, setRandomCharacter] = useState<number | null>(1);
 
   useEffect(() => {
     const randomNumber = Math.floor(Math.random() * 4) + 1;
