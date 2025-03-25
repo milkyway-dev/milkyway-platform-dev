@@ -31,7 +31,7 @@ const Annoucement: React.FC = () => {
           }}
           className="rounded-[0.5vw] overflow-hidden flex justify-center items-center landscape:text-[1.2vw] portrait:text-[1.2vh] text-black min-h-[50vh] p-4"
         >
-          <div className="w-[90%] flex justify-center items-center text-center">
+          <div className="w-[90%] flex justify-center custom-font items-center text-center">
             {option === "Announcement" && <Announce />}
             {option === "Game management" && <GameManage />}
           </div>
