@@ -8,8 +8,8 @@ const Logout = async () => {
     "use server";
     const cookie = await cookies()
 cookie.delete("token");
-cookie.delete("AWSALBTG");
-cookie.delete("AWSALBTGCORS");
+cookie.delete("AWSALB");
+cookie.delete("AWSALBCORS");
 
     redirect("/login");
   }

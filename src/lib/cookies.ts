@@ -8,14 +8,14 @@ export const getCookie = async () => {
 }; ``
 
 export const getAwsAlbCookie = async () => {
-  const cookieStore =await cookies();
-  const awsALBCookie = cookieStore.get("AWSALBTG")?.value;
-  const awsALBTGCORSCookie = cookieStore.get("AWSALBTGCORS")?.value;
-  return { awsALBCookie, awsALBTGCORSCookie };
+  const cookieStore = await cookies();
+  const awsALBCookie = cookieStore.get("AWSALB")?.value;
+  const AWSALBCORSCookie = cookieStore.get("AWSALBCORS")?.value;
+  return { awsALBCookie, AWSALBCORSCookie };
 }
 
 export const deleteCookie = async () => {
-  const cookie=await cookies()
+  const cookie = await cookies()
   cookie.delete("token");
 };
 

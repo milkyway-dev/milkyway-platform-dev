@@ -1,45 +1,75 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useVolumeControl } from "../../lib/context/VolumeControl";
+import { usePathname } from "next/navigation";
 
 const AudioPlayer = () => {
   const { volume, audioRef, playAudio, pauseAudio } = useVolumeControl();
+  const pathname = usePathname();
   const [error, setError] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const handlePlayAudio = async () => {
+    const tryPlayAudio = async () => {
       try {
         await playAudio();
         setIsPlaying(true);
       } catch (err: any) {
+        console.error("Audio play error:", err);
         if (err.name === "NotAllowedError") {
-          setError("Autoplay failed. Click to play.");
+          setError("Autoplay blocked. Click anywhere to start.");
         } else {
           setError("Failed to play audio.");
         }
-        console.error("Audio play error:", err);
       }
     };
 
-    const handleUserInteraction = async () => {
-      await handlePlayAudio();
+    const handleUserInteraction = () => {
+      setHasInteracted(true);
+      tryPlayAudio();
       document.removeEventListener("click", handleUserInteraction);
       document.removeEventListener("keydown", handleUserInteraction);
+      window.removeEventListener("scroll", handleUserInteraction);
     };
 
-    // Add event listeners for first user interaction
+    const handleFocus = () => {
+      if (hasInteracted && pathname === "/") {
+        tryPlayAudio();
+      }
+    };
+
+    const handleBlur = () => {
+      if (audio && !audio.paused) {
+        pauseAudio();
+      }
+    };
+
+    // Play if user interacted and is on /image
+    if (pathname === "/" && hasInteracted) {
+      tryPlayAudio();
+    } else {
+      pauseAudio();
+    }
+
+    // Listen for user interactions
     document.addEventListener("click", handleUserInteraction);
     document.addEventListener("keydown", handleUserInteraction);
+    window.addEventListener("scroll", handleUserInteraction);
+    window.addEventListener("focus", handleFocus);
+    window.addEventListener("blur", handleBlur);
 
     return () => {
       document.removeEventListener("click", handleUserInteraction);
       document.removeEventListener("keydown", handleUserInteraction);
+      window.removeEventListener("scroll", handleUserInteraction);
+      window.removeEventListener("focus", handleFocus);
+      window.removeEventListener("blur", handleBlur);
     };
-  }, [audioRef]);
+  }, [pathname, hasInteracted, audioRef]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -48,7 +78,10 @@ const AudioPlayer = () => {
   }, [volume, audioRef]);
 
   return (
-    <audio ref={audioRef} src="/audio/bg-audio.mp3" loop className="hidden" />
+    <>
+      {error && <p className="text-red-500 text-center">{error}</p>}
+      <audio ref={audioRef} src="/audio/bg-audio.mp3" loop className="hidden" />
+    </>
   );
 };
 

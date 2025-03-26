@@ -23,14 +23,14 @@ export async function POST(request: Request) {
         const setCookieHeader = apiResponse.headers.get('set-cookie');
         if (setCookieHeader) {
             const cookies = setCookieHeader.split(', ').map(cookie => cookie.split(';')[0]);
-            const awsALBTG = cookies.find(cookie => cookie.startsWith('AWSALBTG='));
-            const awsALBTGCORS = cookies.find(cookie => cookie.startsWith('AWSALBTGCORS='));
+            const AWSALB = cookies.find(cookie => cookie.startsWith('AWSALB='));
+            const AWSALBCORS = cookies.find(cookie => cookie.startsWith('AWSALBCORS='));
 
             const response = NextResponse.json(data);
 
-            if (awsALBTG) {
-                const tgValue = awsALBTG.split('=')[1];
-                response.cookies.set('AWSALBTG', tgValue, {
+            if (AWSALB) {
+                const tgValue = AWSALB.split('=')[1];
+                response.cookies.set('AWSALB', tgValue, {
                     httpOnly: false,
                     secure: process.env.NODE_ENV === 'production',
                     sameSite: 'strict',
@@ -38,9 +38,9 @@ export async function POST(request: Request) {
                 });
             }
 
-            if (awsALBTGCORS) {
-                const corsValue = awsALBTGCORS.split('=')[1];
-                response.cookies.set('AWSALBTGCORS', corsValue, {
+            if (AWSALBCORS) {
+                const corsValue = AWSALBCORS.split('=')[1];
+                response.cookies.set('AWSALBCORS', corsValue, {
                     httpOnly: false,
                     secure: process.env.NODE_ENV === 'production',
                     sameSite: 'strict',

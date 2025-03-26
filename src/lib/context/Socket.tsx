@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import Notification from "@/src/components/ui/Notification";
 import { getAwsAlbCookie } from "@/src/lib/cookies";
 import { config } from "../config";
-import { Events } from "../utils";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -43,11 +42,14 @@ export const SocketProvider: React.FC<{
 
     const initializeSocket = async () => {
 
+
       // const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
       // if (config.nodeEnv !== "development" && (!awsALBCookie || !awsALBTGCORSCookie)) {
       //   console.error("Missing AWS sticky session cookies");
       //   return;
       // }
+
+
 
       let platformId = sessionStorage.getItem("platformId");
       if (!platformId) {
@@ -58,15 +60,13 @@ export const SocketProvider: React.FC<{
       console.log("Initializing socket connection...");
       socketInitialized.current = true;
 
-      const socketInstance = io(`${config.server}/playground`, {
+      const socketInstance = io(`${config.server}`, {
         transports: ["websocket"],
         auth: {
           token,
           origin: config.platform,
-          playgroundId: platformId,
+          // playgroundId: platformId,
         },
-
-
       })
 
       setSocket(socketInstance);
@@ -85,15 +85,11 @@ export const SocketProvider: React.FC<{
         socketInitialized.current = false; // Allow reconnection if disconnected
       });
 
+      // ...rest of your event handlers
       socketInstance.on("data", (data: any) => {
         switch (data?.type) {
-          case Events.PLAYGROUND_CREDITS:
-            dispatch(setCredits(data?.payload?.credits));
-            break;
-
-          case Events.PLAYGROUND_EXIT:
-            dispatch(resetUser());
-            router.push("/logout");
+          case "CREDIT":
+            dispatch(setCredits(data?.data?.credits));
             break;
           default:
         }
@@ -113,7 +109,10 @@ export const SocketProvider: React.FC<{
       });
 
       socketInstance.on("alert", (message: any) => {
-        if (message === "NewTab") {
+        if (message === "ForcedExit") {
+          dispatch(resetUser());
+          router.push("/logout");
+        } else if (message === "NewTab") {
           toast.custom(
             (t) => (
               <Notification
@@ -125,10 +124,6 @@ export const SocketProvider: React.FC<{
           );
         }
       });
-
-      socketInstance.on("ping", () => {
-        socketInstance.emit("pong")
-      })
     };
 
     initializeSocket();

@@ -10,8 +10,8 @@ export async function POST(request: NextRequest) {
         const res = NextResponse.json({ message: 'Logged out' }, { status: 200 });
 
         res.cookies.delete('token');
-        res.cookies.delete('AWSALBTG');
-        res.cookies.delete('AWSALBTGCORS');
+        res.cookies.delete('AWSALB');
+        res.cookies.delete('AWSALBCORS');
         res.cookies.delete('index');
 
         if (!authHeader) {
@@ -48,8 +48,8 @@ export async function POST(request: NextRequest) {
 
 
         res.cookies.delete('token');
-        res.cookies.delete('AWSALBTG');
-        res.cookies.delete('AWSALBTGCORS');
+        res.cookies.delete('AWSALB');
+        res.cookies.delete('AWSALBCORS');
         res.cookies.delete('index');
 
         return res;
