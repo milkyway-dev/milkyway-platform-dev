@@ -130,11 +130,20 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
             ".CarouselNext"
           ) as HTMLButtonElement;
           nextButton.click();
+          const clickEffectElements = document.querySelectorAll(".click-effect");
+          clickEffectElements.forEach((element) => {
+            element.remove();
+          });
+
         } else {
           const prevButton = document.querySelector(
             ".CarouselPrevious"
           ) as HTMLButtonElement;
           prevButton.click();
+          const clickEffectElements = document.querySelectorAll(".click-effect");
+          clickEffectElements.forEach((element) => {
+            element.remove();
+          });
         }
 
         setTimeout(() => {

@@ -88,6 +88,8 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !AWSALBCORSCookie)) {
 
       // ...rest of your event handlers
       socketInstance.on("data", (data: any) => {
+        dispatch(setCredits(data?.data?.credits));
+
         switch (data?.type) {
           case "CREDIT":
             dispatch(setCredits(data?.data?.credits));
@@ -110,15 +112,26 @@ if (config.nodeEnv !== "development" && (!awsALBCookie || !AWSALBCORSCookie)) {
       });
 
       socketInstance.on("alert", (message: any) => {
+        console.log("Alert:", message);
         if (message === "ForcedExit") {
           dispatch(resetUser());
           router.push("/logout");
-        } else if (message === "NewTab") {
+        } else if (message === "NewTab"||message === "Platform already connected.") {
           toast.custom(
             (t) => (
               <Notification
                 visible={t.visible}
                 message="You are already active in another tab."
+              />
+            ),
+            { duration: Infinity }
+          );
+        }else if (message === "Platform already connected.") {
+          toast.custom(
+            (t) => (
+              <Notification
+                visible={t.visible}
+                message="You'r already loged in on another browser or tab."
               />
             ),
             { duration: Infinity }
