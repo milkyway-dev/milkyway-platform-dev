@@ -4,12 +4,15 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import Notification from "../components/ui/Notification";
 import { useRouter } from "next/navigation";
+import { Cookie } from "next/font/google";
 
 const Error = () => {
   const router = useRouter();
   const deleteCookieHandler = () => {
     try {
       Cookies.remove("token");
+      Cookies.remove("AWSALBTG");
+      Cookies.remove("AWSALBTGCORS");
       toast.custom((t) => (
         <Notification visible={t.visible} message="Logout Successfull" />
       ));
