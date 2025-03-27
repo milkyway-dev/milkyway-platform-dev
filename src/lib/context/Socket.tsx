@@ -33,7 +33,6 @@ export const SocketProvider: React.FC<{ token: string; children: React.ReactNode
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    if (socketInitialized.current || !token) return;
 
     const initializeSocket = async () => {
       let platformId = sessionStorage.getItem("platformId");
