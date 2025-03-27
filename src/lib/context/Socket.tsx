@@ -3,12 +3,11 @@
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import toast from "react-hot-toast";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch} from "../redux/hooks";
 import { resetUser, setCredits, updateConnection } from "../redux/features/userSlice";
 import { useRouter } from "next/navigation";
 import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
 import Notification from "@/src/components/ui/Notification";
-import { getAwsAlbCookie } from "@/src/lib/cookies";
 import { config } from "../config";
 import { Events } from "../utils";
 
