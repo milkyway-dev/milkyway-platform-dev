@@ -16,7 +16,6 @@ interface SocketContextType {
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
-
 export const useSocket = (): Socket | null => {
   const context = useContext(SocketContext);
   if (!context) {
@@ -25,10 +24,7 @@ export const useSocket = (): Socket | null => {
   return context.socket;
 };
 
-export const SocketProvider: React.FC<{
-  token: string;
-  children: React.ReactNode;
-}> = ({ token, children }) => {
+export const SocketProvider: React.FC<{ token: string; children: React.ReactNode }> = ({ token, children }) => {
   const dispatch = useAppDispatch();
   const [socket, setSocket] = useState<Socket | null>(null);
   const socketInitialized = useRef(false);
@@ -36,7 +32,7 @@ export const SocketProvider: React.FC<{
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    if (!token || socketInitialized.current) return;
+    if (socketInitialized.current || !token) return;
 
     const initializeSocket = async () => {
       let platformId = sessionStorage.getItem("platformId");
@@ -50,11 +46,7 @@ export const SocketProvider: React.FC<{
 
       const socketInstance = io(`${config.server}/playground`, {
         transports: ["websocket"],
-        auth: {
-          token,
-          origin: config.platform,
-          playgroundId: platformId,
-        },
+        auth: { token, origin: config.platform, playgroundId: platformId },
       });
 
       setSocket(socketInstance);
@@ -71,7 +63,6 @@ export const SocketProvider: React.FC<{
         dispatch(resetUser());
         dispatch(updateConnection(false));
         socketInitialized.current = false;
-        setSocket(null);
       });
 
       socketInstance.on("data", (data: any) => {
@@ -89,12 +80,7 @@ export const SocketProvider: React.FC<{
       socketInstance.on("error", (error: { message: string }) => {
         console.error("Socket error:", error.message);
         toast.custom(
-          (t) => (
-            <Notification
-              visible={t.visible}
-              message={error.message || "Connection error occurred"}
-            />
-          ),
+          (t) => <Notification visible={t.visible} message={error.message || "Connection error occurred"} />,
           { duration: Infinity }
         );
       });
@@ -102,13 +88,9 @@ export const SocketProvider: React.FC<{
       socketInstance.on("alert", (message: any) => {
         if (message === "NewTab") {
           toast.custom(
-            (t) => (
-              <Notification
-                visible={t.visible}
-                message="You are already active in another tab."
-              />
-            ),
+            (t) => <Notification visible={t.visible} message="You are already active in another tab." />,
             { duration: Infinity }
+            
           );
         }
       });
@@ -124,23 +106,16 @@ export const SocketProvider: React.FC<{
       if (socket) {
         console.log("Cleaning up socket connection");
         socket.disconnect();
-        setSocket(null);
         socketInitialized.current = false;
         setIsConnected(false);
       }
     };
   }, [token, dispatch, router]);
 
-  // Ensure UI updates when isConnected changes
-  useEffect(() => {
-    if (!isConnected) {
-      setSocket(null); // Prevent stale socket references
-    }
-  }, [isConnected]);
+  // Ensure strict condition: Children only render when socket is connected
+  if (!socket || !isConnected) {
+    return <FullScreenLoader />;
+  }
 
-  return (
-    <SocketContext.Provider value={{ socket }}>
-      {isConnected ? children : <FullScreenLoader />}
-    </SocketContext.Provider>
-  );
+  return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };
