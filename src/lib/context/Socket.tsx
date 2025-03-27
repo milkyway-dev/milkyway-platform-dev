@@ -4,12 +4,13 @@ import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "../redux/hooks";
-import { resetUser, setCredits, updateConnection } from "../redux/features/userSlice";
+import { resetUser, setAlert, setCredits, updateConnection } from "../redux/features/userSlice";
 import { useRouter } from "next/navigation";
 import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
 import Notification from "@/src/components/ui/Notification";
 import { config } from "../config";
 import { Events } from "../utils";
+import Loader from "@/src/components/ui/Loader";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -32,7 +33,6 @@ export const SocketProvider: React.FC<{ token: string; children: React.ReactNode
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    if (socketInitialized.current || !token) return;
 
     const initializeSocket = async () => {
       let platformId = sessionStorage.getItem("platformId");
@@ -86,12 +86,9 @@ export const SocketProvider: React.FC<{ token: string; children: React.ReactNode
       });
 
       socketInstance.on("alert", (message: any) => {
+
         if (message === "NewTab") {
-          toast.custom(
-            (t) => <Notification visible={t.visible} message="You are already active in another tab." />,
-            { duration: Infinity }
-            
-          );
+          dispatch(setAlert(true))
         }
       });
 
@@ -112,5 +109,7 @@ export const SocketProvider: React.FC<{ token: string; children: React.ReactNode
     };
   }, [token, dispatch, router]);
 
-  return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
+
+  
+  return <SocketContext.Provider value={{ socket }}>{isConnected?children:<Loader/>}</SocketContext.Provider>;
 };
