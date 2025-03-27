@@ -48,10 +48,5 @@ export default function LogoutPage() {
     logout();
   }, [toast]);
 
-  // Show a simple loading message while logging out
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <p className="text-muted-foreground">Logging out...</p>
-    </div>
-  );
+  return;
 }
