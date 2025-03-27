@@ -112,10 +112,5 @@ export const SocketProvider: React.FC<{ token: string; children: React.ReactNode
     };
   }, [token, dispatch, router]);
 
-  // Ensure strict condition: Children only render when socket is connected
-  if (!socket || !isConnected) {
-    return <FullScreenLoader />;
-  }
-
   return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };
