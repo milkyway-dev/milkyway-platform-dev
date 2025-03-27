@@ -3,12 +3,11 @@
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import toast from "react-hot-toast";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch} from "../redux/hooks";
 import { resetUser, setCredits, updateConnection } from "../redux/features/userSlice";
 import { useRouter } from "next/navigation";
 import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
 import Notification from "@/src/components/ui/Notification";
-import { getAwsAlbCookie } from "@/src/lib/cookies";
 import { config } from "../config";
 import { Events } from "../utils";
 
@@ -31,22 +30,15 @@ export const SocketProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ token, children }) => {
   const dispatch = useAppDispatch();
-  const connection = useAppSelector((state) => state.user.connected);
   const [socket, setSocket] = useState<Socket | null>(null);
   const socketInitialized = useRef(false);
   const router = useRouter();
+  const [isConnected, setIsConnected] = useState(false); // Track socket connection state
 
   useEffect(() => {
-    // Prevent multiple socket initializations
     if (socketInitialized.current || !token) return;
 
     const initializeSocket = async () => {
-      // const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
-      // if (!awsALBCookie || !awsALBTGCORSCookie) {
-      //   console.error("Missing AWS sticky session cookies");
-      //   return;
-      // }
-
       let platformId = sessionStorage.getItem("platformId");
       if (!platformId) {
         platformId = crypto.randomUUID();
@@ -63,25 +55,22 @@ export const SocketProvider: React.FC<{
           origin: config.platform,
           playgroundId: platformId,
         },
-        // extraHeaders: {
-        //   Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
-        // },
       });
 
       setSocket(socketInstance);
 
       socketInstance.on("connect", () => {
         console.log("Connected to Socket.IO server with ID:", socketInstance.id);
-        setTimeout(() => {
-          dispatch(updateConnection(true));
-        }, 1000);
+        setIsConnected(true); // Set connection state to true
+        dispatch(updateConnection(true));
       });
 
       socketInstance.on("disconnect", () => {
         console.log("Disconnected from Socket.IO server");
+        setIsConnected(false); // Set connection state to false
         dispatch(resetUser());
         dispatch(updateConnection(false));
-        socketInitialized.current = false; // Allow reconnection if disconnected
+        socketInitialized.current = false;
       });
 
       socketInstance.on("data", (data: any) => {
@@ -89,12 +78,10 @@ export const SocketProvider: React.FC<{
           case Events.PLAYGROUND_CREDITS:
             dispatch(setCredits(data?.payload?.credits));
             break;
-
           case Events.PLAYGROUND_EXIT:
             dispatch(resetUser());
             router.push("/logout");
             break;
-          default:
         }
       });
 
@@ -107,7 +94,7 @@ export const SocketProvider: React.FC<{
               message={error.message || "Connection error occurred"}
             />
           ),
-          { duration: 5000 }
+          { duration: Infinity }
         );
       });
 
@@ -126,8 +113,8 @@ export const SocketProvider: React.FC<{
       });
 
       socketInstance.on("ping", () => {
-        socketInstance.emit("pong")
-      })
+        socketInstance.emit("pong");
+      });
     };
 
     initializeSocket();
@@ -137,15 +124,14 @@ export const SocketProvider: React.FC<{
         console.log("Cleaning up socket connection");
         socket.disconnect();
         socketInitialized.current = false;
+        setIsConnected(false);
       }
     };
   }, [token, dispatch, router]);
 
   return (
     <SocketContext.Provider value={{ socket }}>
-      {!connection ? <FullScreenLoader /> : children}
+      {!isConnected ? <FullScreenLoader /> : children}
     </SocketContext.Provider>
   );
 };
-
-
