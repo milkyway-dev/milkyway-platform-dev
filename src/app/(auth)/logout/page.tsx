@@ -29,8 +29,6 @@ export default function LogoutPage() {
           />
         ));
       } catch (error) {
-        console.log('Logout error:', error);
-        // Show error toast but don't prevent redirect
         toast.custom((t) => (
           <Notification
             className="sm:rotate-0 -rotate-90"
@@ -38,9 +36,11 @@ export default function LogoutPage() {
             message="An error occurred during logout"
           />
         ));
+       
       } finally {
-        // Always redirect to login page with full page reload
-        // This ensures all React contexts and states are fully reset
+        setTimeout(() => {
+          toast.remove();
+        }, 2000);
         router.push('/login');
       }
     }
@@ -48,10 +48,5 @@ export default function LogoutPage() {
     logout();
   }, [toast]);
 
-  // Show a simple loading message while logging out
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <p className="text-muted-foreground">Logging out...</p>
-    </div>
-  );
+  return;
 }
