@@ -7,6 +7,7 @@ interface UserState {
   avatar: number,
   moveX: number
   connected: boolean
+  alertsMessage: boolean
 }
 
 const initialState: UserState = {
@@ -14,7 +15,8 @@ const initialState: UserState = {
   credits: 0,
   avatar: 1,
   connected:false,
-  moveX:0
+  moveX: 0,
+  alertsMessage:false
 };
 
 const userSlice = createSlice({
@@ -44,8 +46,11 @@ const userSlice = createSlice({
     updateConnection: (state, action: PayloadAction<boolean>) => {
       state.connected = action.payload;
     },
+    setAlert: (state, action: PayloadAction<boolean>) => {
+      state.alertsMessage = action.payload;
+    },
   }
 });
 
-export const { setUsername, setCredits, setAvatar, updateCredits, resetUser,setMoveX,updateConnection} = userSlice.actions;
+export const { setUsername, setCredits, setAvatar, updateCredits, resetUser,setMoveX,updateConnection,setAlert} = userSlice.actions;
 export default userSlice.reducer;
