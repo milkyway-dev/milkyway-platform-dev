@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import toast from "react-hot-toast";
-import { useAppDispatch} from "../redux/hooks";
+import { useAppDispatch } from "../redux/hooks";
 import { resetUser, setCredits, updateConnection } from "../redux/features/userSlice";
 import { useRouter } from "next/navigation";
 import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
@@ -24,19 +24,15 @@ export const useSocket = (): Socket | null => {
   return context.socket;
 };
 
-
-export const SocketProvider: React.FC<{
-  token: string;
-  children: React.ReactNode;
-}> = ({ token, children }) => {
+export const SocketProvider: React.FC<{ token: string; children: React.ReactNode }> = ({ token, children }) => {
   const dispatch = useAppDispatch();
   const [socket, setSocket] = useState<Socket | null>(null);
   const socketInitialized = useRef(false);
   const router = useRouter();
-  const [isConnected, setIsConnected] = useState(false); // Track socket connection state
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    if (socketInitialized.current&&token) return;
+    if (socketInitialized.current || !token) return;
 
     const initializeSocket = async () => {
       let platformId = sessionStorage.getItem("platformId");
@@ -50,24 +46,20 @@ export const SocketProvider: React.FC<{
 
       const socketInstance = io(`${config.server}/playground`, {
         transports: ["websocket"],
-        auth: {
-          token,
-          origin: config.platform,
-          playgroundId: platformId,
-        },
+        auth: { token, origin: config.platform, playgroundId: platformId },
       });
 
       setSocket(socketInstance);
 
       socketInstance.on("connect", () => {
         console.log("Connected to Socket.IO server with ID:", socketInstance.id);
-        setIsConnected(true); // Set connection state to true
+        setIsConnected(true);
         dispatch(updateConnection(true));
       });
 
       socketInstance.on("disconnect", () => {
         console.log("Disconnected from Socket.IO server");
-        setIsConnected(false); // Set connection state to false
+        setIsConnected(false);
         dispatch(resetUser());
         dispatch(updateConnection(false));
         socketInitialized.current = false;
@@ -88,12 +80,7 @@ export const SocketProvider: React.FC<{
       socketInstance.on("error", (error: { message: string }) => {
         console.error("Socket error:", error.message);
         toast.custom(
-          (t) => (
-            <Notification
-              visible={t.visible}
-              message={error.message || "Connection error occurred"}
-            />
-          ),
+          (t) => <Notification visible={t.visible} message={error.message || "Connection error occurred"} />,
           { duration: Infinity }
         );
       });
@@ -101,13 +88,9 @@ export const SocketProvider: React.FC<{
       socketInstance.on("alert", (message: any) => {
         if (message === "NewTab") {
           toast.custom(
-            (t) => (
-              <Notification
-                visible={t.visible}
-                message="You are already active in another tab."
-              />
-            ),
+            (t) => <Notification visible={t.visible} message="You are already active in another tab." />,
             { duration: Infinity }
+            
           );
         }
       });
@@ -129,9 +112,10 @@ export const SocketProvider: React.FC<{
     };
   }, [token, dispatch, router]);
 
-  return (
-    <SocketContext.Provider value={{ socket }}>
-      {!isConnected ? <FullScreenLoader /> : children}
-    </SocketContext.Provider>
-  );
+  // Ensure strict condition: Children only render when socket is connected
+  if (!socket || !isConnected) {
+    return <FullScreenLoader />;
+  }
+
+  return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };
