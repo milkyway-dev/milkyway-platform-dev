@@ -1,6 +1,7 @@
 "use server";
 import { redirect } from "next/navigation";
 import { config } from "./config";
+import { revalidatePath } from "next/cache";
 import { getCookie, getCurrentUser, getAwsAlbCookie } from "./cookies";
 
 interface ApiResponse {
@@ -21,12 +22,12 @@ function isJwtPayload(obj: any): obj is JwtPayload {
 }
 export const getAuthHeaders = async () => {
   const token = await getCookie();
-  const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
+  const { awsALBCookie, AWSALBCORSCookie } = await getAwsAlbCookie();
 
   const cookies = [
     `userToken=${token}`,
-    awsALBCookie ? `AWSALBTG=${awsALBCookie}` : "",
-    awsALBTGCORSCookie ? `AWSALBTGCORS=${awsALBTGCORSCookie}` : "",
+    awsALBCookie ? `AWSALB=${awsALBCookie}` : "",
+    AWSALBCORSCookie ? `AWSALBCORS=${AWSALBCORSCookie}` : "",
   ]
     .filter(Boolean)
     .join("; ");
@@ -93,13 +94,14 @@ export const addFavGame = async (
 
   try {
     const headers = await getAuthHeaders();
-
+    console.log(id, type, "id")
     const response = await fetch(
       `${config.server}/api/games/favourite/${user.id}`,
       {
         method: "PUT",
         credentials: "include",
         headers: headers,
+        body: JSON.stringify({ gameId: id, type }),
       }
     );
 
@@ -113,6 +115,8 @@ export const addFavGame = async (
     } else {
       return { message: "An unknown error occurred" };
     }
+  } finally {
+    revalidatePath('/')
   }
 
 };

@@ -1,16 +1,14 @@
 "use client";
-
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import toast from "react-hot-toast";
+import Loader from "@/src/components/ui/Loader";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { resetUser, setCredits, updateConnection } from "../redux/features/userSlice";
 import { useRouter } from "next/navigation";
-import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
 import Notification from "@/src/components/ui/Notification";
 import { getAwsAlbCookie } from "@/src/lib/cookies";
 import { config } from "../config";
-import { Events } from "../utils";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -31,9 +29,11 @@ export const SocketProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ token, children }) => {
   const dispatch = useAppDispatch();
+
   const connection = useAppSelector((state) => state.user.connected);
   const [socket, setSocket] = useState<Socket | null>(null);
   const socketInitialized = useRef(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -41,11 +41,12 @@ export const SocketProvider: React.FC<{
     if (socketInitialized.current || !token) return;
 
     const initializeSocket = async () => {
-      // const { awsALBCookie, awsALBTGCORSCookie } = await getAwsAlbCookie();
-      // if (!awsALBCookie || !awsALBTGCORSCookie) {
-      //   console.error("Missing AWS sticky session cookies");
-      //   return;
-      // }
+    
+      const { awsALBCookie, AWSALBCORSCookie } = await getAwsAlbCookie();
+if (config.nodeEnv !== "development" && (!awsALBCookie || !AWSALBCORSCookie)) {
+        console.error("Missing AWS sticky session cookies");
+        return;
+      }
 
       let platformId = sessionStorage.getItem("platformId");
       if (!platformId) {
@@ -56,17 +57,18 @@ export const SocketProvider: React.FC<{
       console.log("Initializing socket connection...");
       socketInitialized.current = true;
 
-      const socketInstance = io(`${config.server}/playground`, {
+      const socketInstance = io(`${config.server}`, {
         transports: ["websocket"],
         auth: {
           token,
           origin: config.platform,
-          playgroundId: platformId,
+          // playgroundId: platformId,
         },
-        // extraHeaders: {
-        //   Cookie: `AWSALBTG=${awsALBCookie}; AWSALBTGCORS=${awsALBTGCORSCookie}`,
-        // },
-      });
+
+        extraHeaders: {
+          Cookie: `AWSALB=${awsALBCookie}; AWSALBCORS=${AWSALBCORSCookie}`,
+        },
+      })
 
       setSocket(socketInstance);
 
@@ -84,15 +86,13 @@ export const SocketProvider: React.FC<{
         socketInitialized.current = false; // Allow reconnection if disconnected
       });
 
+      // ...rest of your event handlers
       socketInstance.on("data", (data: any) => {
-        switch (data?.type) {
-          case Events.PLAYGROUND_CREDITS:
-            dispatch(setCredits(data?.payload?.credits));
-            break;
+        dispatch(setCredits(data?.data?.credits));
 
-          case Events.PLAYGROUND_EXIT:
-            dispatch(resetUser());
-            router.push("/logout");
+        switch (data?.type) {
+          case "CREDIT":
+            dispatch(setCredits(data?.data?.credits));
             break;
           default:
         }
@@ -112,7 +112,11 @@ export const SocketProvider: React.FC<{
       });
 
       socketInstance.on("alert", (message: any) => {
-        if (message === "NewTab") {
+        console.log("Alert:", message);
+        if (message === "ForcedExit") {
+          dispatch(resetUser());
+          router.push("/logout");
+        } else if (message === "NewTab"||message === "Platform already connected.") {
           toast.custom(
             (t) => (
               <Notification
@@ -122,12 +126,18 @@ export const SocketProvider: React.FC<{
             ),
             { duration: Infinity }
           );
+        }else if (message === "Platform already connected.") {
+          toast.custom(
+            (t) => (
+              <Notification
+                visible={t.visible}
+                message="You'r already loged in on another browser or tab."
+              />
+            ),
+            { duration: Infinity }
+          );
         }
       });
-
-      socketInstance.on("ping", () => {
-        socketInstance.emit("pong")
-      })
     };
 
     initializeSocket();
@@ -143,7 +153,7 @@ export const SocketProvider: React.FC<{
 
   return (
     <SocketContext.Provider value={{ socket }}>
-      {!connection ? <FullScreenLoader /> : children}
+      {connection?children:<Loader/>}
     </SocketContext.Provider>
   );
 };

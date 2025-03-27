@@ -11,8 +11,8 @@ const Error = () => {
   const deleteCookieHandler = () => {
     try {
       Cookies.remove("token");
-      Cookies.remove("AWSALBTG");
-      Cookies.remove("AWSALBTGCORS");
+      Cookies.remove("AWSALB");
+      Cookies.remove("AWSALBCORS");
       toast.custom((t) => (
         <Notification visible={t.visible} message="Logout Successfull" />
       ));

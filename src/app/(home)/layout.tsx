@@ -1,10 +1,11 @@
 import { getCookie } from "@/src/lib/cookies";
+import { SocketProvider } from "../../lib/context/Socket";
+import StoreProvider from "../../lib/redux/Provider";
 import "../globals.css";
-import StoreProvider from "@/src/lib/redux/Provider";
-import { SocketProvider } from "@/src/lib/context/Socket";
+
 
 export const metadata = {
-  title: "El Dorado Spin",
+  title: "Power Panda",
   description: "Gaming platform",
 };
 
