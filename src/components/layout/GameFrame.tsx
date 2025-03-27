@@ -12,7 +12,7 @@ interface GameFrameProps {
     url?: string;
   };
 }
-
+//
 const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
   const [iframeKey, setIframeKey] = useState<number>(0);
   const [gameLoaded, setGameLoaded] = useState<boolean>(false);
