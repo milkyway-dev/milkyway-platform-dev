@@ -36,7 +36,7 @@ export const SocketProvider: React.FC<{
   const [isConnected, setIsConnected] = useState(false); // Track socket connection state
 
   useEffect(() => {
-    if (socketInitialized.current || !token) return;
+    if (socketInitialized.current&&token) return;
 
     const initializeSocket = async () => {
       let platformId = sessionStorage.getItem("platformId");
