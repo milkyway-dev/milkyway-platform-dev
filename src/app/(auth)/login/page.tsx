@@ -90,7 +90,6 @@ const Login = () => {
       });
 
       const data = await response.json();
-    console.log(data,"data is here")
       if (response.ok) {
         if (data?.isUnderMaintenance) {
           toast.remove();

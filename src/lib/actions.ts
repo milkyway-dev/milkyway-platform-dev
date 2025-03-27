@@ -94,7 +94,6 @@ export const addFavGame = async (
 
   try {
     const headers = await getAuthHeaders();
-    console.log(id, type, "id")
     const response = await fetch(
       `${config.server}/api/games/favourite/${user.id}`,
       {
@@ -116,7 +115,7 @@ export const addFavGame = async (
       return { message: "An unknown error occurred" };
     }
   } finally {
-    revalidatePath('/')
+    // revalidatePath('/')
   }
 
 };

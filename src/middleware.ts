@@ -18,16 +18,7 @@ export default function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const isPublicPath = path === "/login";
   const token = request.cookies.get("token");
-  const AWSALB = request.cookies.get("AWSALB");
-  const AWSALBCORS = request.cookies.get("AWSALBCORS");
 
-  if (_config.nodeEnv !== 'development' && (!AWSALB || !AWSALBCORS) && !isPublicPath) {
-    const response = NextResponse.redirect(new URL("/login", request.url));
-    response.cookies.delete("token");
-    response.cookies.delete("AWSALB");
-    response.cookies.delete("AWSALBCORS");
-    return response;
-  }
 
   if (_config.nodeEnv !== 'development' && token?.value && isTokenExpired(token.value)) {
     const response = NextResponse.redirect(new URL("/logout", request.url));

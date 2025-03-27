@@ -8,9 +8,10 @@ import React, { useEffect, useState } from "react";
 
 
 interface PageProps {
-  params: Promise<{ gameId: string }>;
+  params: {
+    gameId: string;
+  };
 }
-
 
 const Page: React.FC<PageProps> = ({ params }) => {
   const { gameId } = params;
@@ -34,7 +35,6 @@ useEffect(() => {
 
 if (loading) return <p className="text-center">Loading game...</p>;
 if (!gameData) return <p className="text-center text-red-500">Something went wrong.</p>;
-
 
 return <GameFrame data={gameData} />;
 };
