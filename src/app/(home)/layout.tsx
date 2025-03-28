@@ -5,7 +5,7 @@ import "../globals.css";
 
 
 export const metadata = {
-  title: "Power Panda",
+  title: "Panda Power",
   description: "Gaming platform",
 };
 

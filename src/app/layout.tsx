@@ -14,7 +14,7 @@ const Macondo_font = Macondo({
 
 
 export const metadata = {
-  title: "Power Panda",
+  title: "Panda Power",
   description: "Gaming platform",
 };
 

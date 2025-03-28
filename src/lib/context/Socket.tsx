@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { useAppDispatch } from "../redux/hooks";
 import { resetUser, setAlert, setCredits, updateConnection } from "../redux/features/userSlice";
 import { useRouter } from "next/navigation";
-import FullScreenLoader from "@/src/components/layout/FullScreenLoader";
 import Notification from "@/src/components/ui/Notification";
 import { config } from "../config";
 import { Events } from "../utils";
@@ -87,7 +86,7 @@ export const SocketProvider: React.FC<{ token: string; children: React.ReactNode
 
       socketInstance.on("alert", (message: any) => {
 
-        if (message === "NewTab") {
+        if (message === "Newtab") {
           dispatch(setAlert(true))
         }
       });
