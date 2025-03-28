@@ -86,7 +86,7 @@ export const SocketProvider: React.FC<{ token: string; children: React.ReactNode
 
       socketInstance.on("alert", (message: any) => {
 
-        if (message === "Newtab") {
+        if (message === "NewTab") {
           dispatch(setAlert(true))
         }
       });
