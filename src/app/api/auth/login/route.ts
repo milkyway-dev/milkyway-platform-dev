@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
     try {
-        console.log(request, 'request');
+
         const body = await request.json();
         const apiResponse = await fetch(`${config.server}/api/users/login`, {
             method: "POST",

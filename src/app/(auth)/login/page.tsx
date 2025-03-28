@@ -77,6 +77,7 @@ const Login = () => {
           className="-rotate-90 sm:rotate-0"
           visible={t.visible}
           message="Loggin In..."
+      
         />
       ));
       const response = await fetch(`/api/auth/login`, {
@@ -89,7 +90,6 @@ const Login = () => {
       });
 
       const data = await response.json();
-
       if (response.ok) {
         if (data?.isUnderMaintenance) {
           toast.remove();
@@ -179,6 +179,9 @@ const Login = () => {
           quality={100}
           objectPosition="center"
           className=" object-cover  w-full"
+          unoptimized
+          draggable="false" 
+          onContextMenu={(e) => e.preventDefault()} // Disables right-click
         />
         <div className="relative w-full sm:w-[45%]  min-h-screen sm:min-h-[20vw] sm:mr-0 sm:h-[50vw] m-auto">
           <Image
@@ -186,6 +189,9 @@ const Login = () => {
             alt="login-character"
             fill
             className="z-[2] object-cover md:object-contain top-0"
+            unoptimized
+            draggable="false" 
+            onContextMenu={(e) => e.preventDefault()} // Disables right-click
           />
         </div>
         <form
@@ -201,6 +207,9 @@ const Login = () => {
               height={1000}
               quality={100}
               className="w-[50%] sm:w-[35%]"
+              unoptimized
+              draggable="false" 
+              onContextMenu={(e) => e.preventDefault()} // Disables right-click
             />
           </div>
           {/* Input Field Component */}
@@ -216,6 +225,9 @@ const Login = () => {
                 width={200}
                 height={200}
                 className="portrait:w-[2.7vh] landscape:w-[2.3vw] 2xl:landscape:w-[1.7vw]"
+                unoptimized
+                draggable="false" 
+                onContextMenu={(e) => e.preventDefault()} // Disables right-click
               />
               <input
                 type={placeholder === 'PASSWORD' ? 'password' : 'text'}
@@ -223,6 +235,8 @@ const Login = () => {
                 onChange={placeholder === 'ACCOUNT' ? handleUsernameChange : handlePasswordChange}
                 className="w-full pl-4 portrait:py-[1.1vh] landscape:py-[1.3vw]  2xl:landscape:py-[.7vw] text-xs bg-transparent lg:text-[1rem] 2xl:text-2xl border-[3.5px] border-[#335a06] text-yellow-400 placeholder:text-yellow-400  font-bold bg-no-repeat bg-contain outline-none"
                 style={{ fontFamily: 'Macondo' }}
+                autoComplete="off" // Disables autofill
+                spellCheck={false}
               />
               <Image
                 src={'/assets/images/inputframe.webp'}
@@ -231,6 +245,9 @@ const Login = () => {
                 width={200}
                 height={200}
                 className="portrait:w-[2.7vh] landscape:w-[2.3vw] 2xl:landscape:w-[1.7vw] rotate-180"
+                unoptimized
+                draggable="false" 
+                onContextMenu={(e) => e.preventDefault()} // Disables right-click
               />
             </div>
           ))}
@@ -251,6 +268,9 @@ const Login = () => {
               width={200}
               height={200}
               className="portrait:w-[3vh] landscape:w-[2.4vw] 2xl:landscape:w-[1.7vw]"
+              unoptimized
+              draggable="false" 
+              onContextMenu={(e) => e.preventDefault()} // Disables right-click
             />
             <button
               className="w-full border-[3.5px] portrait:py-[.8vh] landscape:py-[.5vw] lg:landscape:py-[.5vw] text-yellow-400 text-xl lg:text-2xl 2xl:text-4xl font-bold outline-none"
@@ -268,6 +288,9 @@ const Login = () => {
               width={200}
               height={200}
               className="portrait:w-[3vh] landscape:w-[2.4vw] 2xl:landscape:w-[1.7vw] rotate-180"
+              unoptimized
+              draggable="false" 
+              onContextMenu={(e) => e.preventDefault()} 
             />
           </div>
         </form>

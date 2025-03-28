@@ -13,6 +13,7 @@ import Loader from "../ui/Loader";
 import { Data, Game } from "../../lib/types";
 import { fetchGames } from "../../lib/actions";
 import { useAppSelector } from "../../lib/redux/hooks";
+import Notification from "../ui/Notification";
 
 
 interface GamesProps {
@@ -35,6 +36,8 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
   );
 
   const move = useAppSelector((state) => state.user.moveX);
+  const isNewTab = useAppSelector((state) => state.user.alertsMessage);
+
   const prevMove = useRef<number>(move); 
 
   useEffect(() => {
@@ -130,11 +133,20 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
             ".CarouselNext"
           ) as HTMLButtonElement;
           nextButton.click();
+          const clickEffectElements = document.querySelectorAll(".click-effect");
+          clickEffectElements.forEach((element) => {
+            element.remove();
+          });
+
         } else {
           const prevButton = document.querySelector(
             ".CarouselPrevious"
           ) as HTMLButtonElement;
           prevButton.click();
+          const clickEffectElements = document.querySelectorAll(".click-effect");
+          clickEffectElements.forEach((element) => {
+            element.remove();
+          });
         }
 
         setTimeout(() => {
@@ -164,8 +176,16 @@ const Games: React.FC<GamesProps> = ({ favgame, initialGames }) => {
     }
   }, []);
 
-  
-
+  useEffect(() => {
+    if (isNewTab) {
+      toast.custom(
+        (t) => <Notification visible={t.visible} message="You are already active in another tab." />,
+        { duration: Infinity }
+        
+      );
+    }
+  },[isNewTab])
+ 
   return (
     <div className="Carousel  relative flex items-center justify-center">
       <Carousel className="sm:w-[100%] w-[95%] m-auto" opts={{ loop: true }}>

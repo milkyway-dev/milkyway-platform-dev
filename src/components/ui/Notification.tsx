@@ -4,6 +4,7 @@ interface NotificationProps {
   visible: boolean;
   message: string;
   className?: string; // Optional string type
+  
 }
 
 const Notification: React.FC<NotificationProps> = ({

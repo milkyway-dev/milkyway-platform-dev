@@ -12,7 +12,7 @@ interface GameFrameProps {
     url?: string;
   };
 }
-
+//
 const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
   const [iframeKey, setIframeKey] = useState<number>(0);
   const [gameLoaded, setGameLoaded] = useState<boolean>(false);
@@ -100,7 +100,7 @@ const GameFrame: React.FC<GameFrameProps> = ({ data }) => {
                 socketURL: config.server,
                 console: config.nodeEnv === "production" ? false : true,
                 loaderUrl: config.loaderUrl,
-                // nameSpace: config.namespace,
+                nameSpace: config.namespace,
               },
               `${data?.url}`
             );

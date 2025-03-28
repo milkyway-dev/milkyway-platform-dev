@@ -18,10 +18,6 @@ export default function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const isPublicPath = path === "/login";
   const token = request.cookies.get("token");
-  const AWSALB = request.cookies.get("AWSALB");
-  const AWSALBCORS = request.cookies.get("AWSALBCORS");
-
-
 
 
   if (_config.nodeEnv !== 'development' && token?.value && isTokenExpired(token.value)) {
